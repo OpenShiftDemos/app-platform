@@ -1,4 +1,4 @@
-= Security and Automation in software delivery  (30 mins)
+= Security and Automation in Software Delivery (30 mins)
 
 == Introduction
 
