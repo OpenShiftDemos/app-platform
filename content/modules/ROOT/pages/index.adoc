@@ -5,16 +5,30 @@ The
 == 1. Introduction and Overview - 10 minutes
 
 :imagesdir: ../assets/images
+Welcome to our workshop!
 
-== 1.1 Introduction to this module
+This lab will give attendees a comprehensive understanding of OpenShift as an application platform that can accelerate their day-to-day activities, from development to adopting DevSecOps and GitOps approaches, to running applications from development to production environments.
 
-This module shows how developers can build, deploy and manage applications using Red Hat Developer Hub. Red Hat Developer Hub will allow you to perform the same previous activities with an accelerated approach by reducing developer friction and improving time to market.
+The lab will cover the entire lifecycle of an application, from importing existing services, to developing new capabilities, putting in place DevSecOps pipelines to promote the application through multiple environments, and, finally, scaling, monitoring, and managing the application in production environments for a complete feedback loop with continuous security.
 
-The module starts with an overview of the product, followed by the product architecture and a tour of the main functionalities.
-You will implement two use cases, from *maintaining a new application* that requires bug fixing to *modernize a legacy application*.
+After completing the lab, you should feel comfortable speaking with customer application and developer teams about the benefits of using OpenShift as the application platform they need to build, deploy, manage, and scale their applications.
 
+== 2. Modules
 
-=== Lab Access
+* Developer Experience & Application Modernization (30 mins)
+
+** Explore Developer experience to understand developers' journey, daily activities, and how OpenShift Application Platform brings developer productivity by reducing complexity and overhead from operations. 
+* Extend to the edge and interconnect (30 mins)
+
+** Extend Red Hat to the Edge to run workloads anywhere and connecting easily with Red Hat Service Interconnect.
+
+* Security and Automation in software delivery (30 mins)
+
+=== Lab Access (TODO)
 
 The terminal window to your right is *already* logged into the lab environment as the `{ssh_user}` user via `ssh`. 
 All steps of this lab are to be completed as the `{ssh_user}` user.
+
+
+
+

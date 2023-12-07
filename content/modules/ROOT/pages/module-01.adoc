@@ -1,4 +1,4 @@
-= Application Modernization and Developer Experience
+= Application Modernization and Developer Experience  (30 mins)
 
 == Introduction
 
