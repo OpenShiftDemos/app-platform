@@ -1,12 +1,9 @@
 
 * xref:module-01.adoc[1. Application Modernization and Developer Experience]
 ** xref:module-01.adoc#introduction[Introduction]
-** xref:module-01.adoc#software[Software]
 
 * xref:module-02.adoc[2. Extend to the edge and interconnect ]
 ** xref:module-02.adoc#introduction[Introduction]
-** xref:module-02.adoc#software[Software]
 
 * xref:module-03.adoc[3. Security and Automation in software delivery]
 ** xref:module-03.adoc#introduction[Introduction]
-** xref:module-03.adoc#container[Enable Container]
