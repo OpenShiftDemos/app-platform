@@ -4,8 +4,7 @@ The
 
 == 1. Introduction and Overview - 10 minutes
 
-:imagesdir: ../assets/images
-Welcome to our workshop!
+**Welcome to our workshop!**
 
 This lab will give attendees a comprehensive understanding of OpenShift as an application platform that can accelerate their day-to-day activities, from development to adopting DevSecOps and GitOps approaches, to running applications from development to production environments.
 
@@ -13,12 +12,15 @@ The lab will cover the entire lifecycle of an application, from importing existi
 
 After completing the lab, you should feel comfortable speaking with customer application and developer teams about the benefits of using OpenShift as the application platform they need to build, deploy, manage, and scale their applications.
 
-== 2. Modules
+== 2. Modules Overview
+
+This lab consists of 3 modules to enable you with hands-on to try solutions connected with the application platform story.
 
 * Developer Experience & Application Modernization (30 mins)
 
 ** Explore Developer experience to understand developers' journey, daily activities, and how OpenShift Application Platform brings developer productivity by reducing complexity and overhead from operations. 
-* Extend to the edge and interconnect (30 mins)
+
+* Extend to the edge and interconnect (20 mins)
 
 ** Extend Red Hat to the Edge to run workloads anywhere and connecting easily with Red Hat Service Interconnect.
 
