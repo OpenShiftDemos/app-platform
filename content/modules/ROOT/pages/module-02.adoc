@@ -143,7 +143,10 @@ $ cat inventory-all.yaml
 [source,bash,subs="+attributes,macros+"]
 ----
 $ oc apply -f inventory-all.yaml
-
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
 output:
       serviceaccount/inventory-app created
       secret/inventory-database created
@@ -155,7 +158,10 @@ output:
 [source,bash,subs="+attributes,macros+"]
 ----
 oc apply -f token.yaml
-
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
 output: 
       secret/secret-name created
 ----
@@ -165,7 +171,10 @@ output:
 [source,bash,subs="+attributes,macros+"]
 ----
 skupper expose deployment inventory-database --port 5432
-
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
 output: 
       deployment inventory-database exposed as inventory-database
 ----
@@ -175,9 +184,8 @@ output:
 ----
 skupper link status
 ----
-
 [.console-output]
-[source,bash,subs="+attributes,macros+"]
+[source,subs="+attributes,macros+"]
 ----
 output
       Links created from this site:
@@ -194,9 +202,12 @@ output
 ----
 $ oc get route
 ----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
 output: 
 TODO output
-
+----
 * Explore the different components
 
 ** Topology: Graphical representation of all the connections
