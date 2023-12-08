@@ -97,7 +97,7 @@ $ oc get secret -o yaml secret-name | yq 'del(.metadata.namespace)' > token.yaml
 [source,bash,subs="+attributes,macros+"]
 ----
 $ oc get route
-ååå
+
 output: 
       NAME        HOST/PORT                                                    PATH   SERVICES    PORT   TERMINATION     WILDCARD
       catalog     catalog-demo.apps.cluster-hpxfn-1.sandbox933.opentlc.com            catalog     http   edge/Redirect   None
@@ -106,7 +106,7 @@ output:
 
 **Notes**: 
 
-The inventory information is missing but the Cool Stuff Store website is still visible. Once access to the inventory database this will be resolved. In real situations, we want the Cool Stuff Store to be idempotent against losing access to the inventory database.
+The inventory information is missing but the {app_name} website is still visible. Once access to the inventory database this will be resolved. In real situations, we want the {app_name}  to be idempotent against losing access to the inventory database.
 
 image::coolstore-inventoryissue.png[width=80%]
 
@@ -133,52 +133,84 @@ oc new-project inventory-%USERID%
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-$ cd $HOME/app-platform/module2
-$ cat inventory-database.yaml
+$ cd $HOME/app-platform/content/modules/ROOT/examples/module-02
+$ cat inventory-all.yaml
 ----
 
-
-* Deploy the inventory database by running the following commands in the terminal:
+* Deploy the inventory database and backend service by running the following commands in the terminal:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-$ oc apply -f inventory-database.yaml
+$ oc apply -f inventory-all.yaml
+
+output:
+      serviceaccount/inventory-app created
+      secret/inventory-database created
+      deployment.apps/inventory-database created
+----
+
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
 ----
 oc apply -f token.yaml
-output: secret/secret-name created
 
-oc apply -f inventory-database.yaml
-output:
-serviceaccount/inventory-app created
-secret/inventory-database created
-deployment.apps/inventory-database created
+output: 
+      secret/secret-name created
+----
 
 
-
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
 skupper expose deployment inventory-database --port 5432
 
-output: deployment inventory-database exposed as inventory-database
+output: 
+      deployment inventory-database exposed as inventory-database
+----
 
-
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
 skupper link status
+----
 
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
+----
 output
-
-Links created from this site:
-
-	 Link secret-name is connected
-
+      Links created from this site:
+	      Link secret-name is connected
+----
 
 
-== Red Hat Service Interconnect UI
+== Explore services and connections with Red Hat Service Interconnect UI
 
-Topology: Graphical representation of all the connections
-Components: Services that are exposed on the service network, both local and remote.
-Sites: Application Interconnect installations on the current service network.
-Throughput Bytes: Charts providing traffic related information
+* Using your web browser access the Red Hat Service Interconnect UI:
 
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+$ oc get route
+----
+output: 
+TODO output
 
+* Explore the different components
+
+** Topology: Graphical representation of all the connections
+** Components: Services that are exposed on the service network, both local and remote.
+
+** Sites: Application Interconnect installations on the current service network.
+
+Two sites will be visible, from the SNO (database) and OpenShift (coolstore)
+
+** Throughput Bytes: Charts providing traffic related information
+
+The database will show receiving and sending traffic to the {app_name} site.
+
+TODO-ADD PIC
 
 == Conclusion
 
