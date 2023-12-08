@@ -1,5 +1,190 @@
-= Extend to the edge and interconnect
+= Extend to the edge and interconnect (20 mins)
+:imagesdir: ../assets/images/module2
+
+The open hybrid cloud approach enables applications to run anywhere and connect easily using the same tools without compromising security and availability. Decentralized systems are needed now more than ever to reduce latency, improve user experience, resiliency, and reduce costs.
+
+https://www.redhat.com/en/technologies/cloud-computing/service-interconnect[Red Hat Service Interconnect^]    allows connectivity between clusters, enabling developers to quickly and easily connect their applications without overhead.
+
+https://www.redhat.com/en/technologies/device-edge[Red Hat Device Edge^] It allows organizations to deploy workloads closer to the end user location, providing flexibility with a right-sized platform. Red Hat Device Edge has many flavors. In this lab, you will work with an Single Node OpenShift (SNO).
+
+
+== A retail use case
+In the following example, we will explore a retail use case. Diverse industries can implement this proposed architecture or similar when two services or systems need to connect where they reside on different platforms/networks.
+
+A retail store wants to install an application closer to end user location to gather inventory information from that particular location.
+
+image::edge_interconnect.png[width=80%]
+
+*Retail Store - Las Vegas*: This retail has a Single Node OpenShift (SNO) already setup.
+
+*Retail Central Hub*: This is an online marketplace hosted on Red Hat OpenShift running on AWS. 
+
 
 == Introduction
 
-In this lab, y
+In this lab, you will deploy a database in the Single Node OpenShift (SNO), expose it using Red Hat Service Interconnect to make it available to others to connect it.  In your Red Hat OpenShift running on AWS you will deploy a backend service that will connect to the database to gather information about inventory.
+
+== Catalog on Central Hub - OpenShift on AWS
+
+Red Hat Service Interconnect operator is already installed.
+
+* Login in the OpenShift using the terminal:
+
+[.console-input]
+[source,bash]
+----
+$ oc login -u %USERID% -p openshift 
+----
+
+* Create a new project to deploy the catalog service, *catalog*. Run the following command in the terminal:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc new-project catalog-%USERID%
+----
+
+* Explore the yaml file that will deploy the catalog and the database.
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+$ cd $HOME/app-platform/content/modules/ROOT/examples/module-02
+$ cat coolstore.yaml
+----
+
+
+* Deploy the catalog by running the following commands in the terminal:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc apply -f catalog.yaml
+
+output:
+      serviceaccount/catalog-app created
+      secret/catalog-database created
+      deployment.apps/catalog-database created
+      service/catalog-database created
+      deployment.apps/catalog created
+      service/catalog created
+      route.route.openshift.io/catalog created
+      secret/order-placement created
+      serviceaccount/order-placement created
+      deployment.apps/order-placement created
+      service/order-placement created
+      serviceaccount/globex-app-globex-ui created
+      deployment.apps/globex-ui created
+      service/globex-ui created
+      route.route.openshift.io/globex-ui created
+----
+
+* Create the secret required by Red Hat Service Interconnect to access the current namespace:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc apply -f secret.yaml
+
+output: 
+      secret/secret-name created
+----
+
+$ oc get secret -o yaml secret-name | yq 'del(.metadata.namespace)' > token.yaml
+
+* From a webbrowser, access the coolstore application using the application route:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+$ oc get route
+ååå
+output: 
+      NAME        HOST/PORT                                                    PATH   SERVICES    PORT   TERMINATION     WILDCARD
+      catalog     catalog-demo.apps.cluster-hpxfn-1.sandbox933.opentlc.com            catalog     http   edge/Redirect   None
+      globex-ui   globex-ui-demo.apps.cluster-hpxfn-1.sandbox933.opentlc.com          globex-ui   http   edge/Redirect   Non
+----
+
+**Notes**: 
+
+The inventory information is missing but the Cool Stuff Store website is still visible. Once access to the inventory database this will be resolved. In real situations, we want the Cool Stuff Store to be idempotent against losing access to the inventory database.
+
+image::coolstore-inventoryissue.png[width=80%]
+
+
+== Inventory Database on Retail Store - Single Node OpenShift (SNO)
+
+* Login in the SNO using the terminal:
+
+[.console-input]
+[source,bash]
+----
+$ oc login -u %USERID% -p openshift 
+----
+
+* Create a new project to deploy the PostgreSQL database, *inventory*. Run the following command in the terminal:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc new-project inventory-%USERID%
+----
+
+* Explore the yaml file that will deploy the database.
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+$ cd $HOME/app-platform/module2
+$ cat inventory-database.yaml
+----
+
+
+* Deploy the inventory database by running the following commands in the terminal:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+$ oc apply -f inventory-database.yaml
+----
+oc apply -f token.yaml
+output: secret/secret-name created
+
+oc apply -f inventory-database.yaml
+output:
+serviceaccount/inventory-app created
+secret/inventory-database created
+deployment.apps/inventory-database created
+
+
+
+skupper expose deployment inventory-database --port 5432
+
+output: deployment inventory-database exposed as inventory-database
+
+
+skupper link status
+
+output
+
+Links created from this site:
+
+	 Link secret-name is connected
+
+
+
+== Red Hat Service Interconnect UI
+
+Topology: Graphical representation of all the connections
+Components: Services that are exposed on the service network, both local and remote.
+Sites: Application Interconnect installations on the current service network.
+Throughput Bytes: Charts providing traffic related information
+
+
+
+== Conclusion
+
+
+== More information:
+
+* https://github.com/skupperproject[Interconnect: More use cases and examples^]
+
+* Demo Environment:

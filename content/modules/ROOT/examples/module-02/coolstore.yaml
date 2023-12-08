@@ -99,15 +99,6 @@ spec:
   selector:
     app.kubernetes.io/name: catalog-database
     app.kubernetes.io/part-of: globex-app
-
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    app.kubernetes.io/instance: globex-app
-    app.kubernetes.io/part-of: catalog-app
-  name: catalog-app
 ---
 apiVersion: apps/v1
 kind: Deployment
