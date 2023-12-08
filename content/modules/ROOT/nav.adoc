@@ -5,5 +5,5 @@
 * xref:module-02.adoc[2. Extend to the edge and interconnect ]
 ** xref:module-02.adoc#introduction[Introduction]
 
-* xref:module-03.adoc[3. Security and Automation in software delivery]
+* xref:module-03.adoc[3. Security and Automation in Software Delivery]
 ** xref:module-03.adoc#introduction[Introduction]
