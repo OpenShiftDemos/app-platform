@@ -59,7 +59,10 @@ $ cat coolstore.yaml
 [source,bash,subs="+attributes,macros+"]
 ----
 oc apply -f catalog.yaml
-
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
 output:
       serviceaccount/catalog-app created
       secret/catalog-database created
@@ -84,7 +87,10 @@ output:
 [source,bash,subs="+attributes,macros+"]
 ----
 oc apply -f secret.yaml
-
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
 output: 
       secret/secret-name created
 ----
@@ -97,7 +103,10 @@ $ oc get secret -o yaml secret-name | yq 'del(.metadata.namespace)' > token.yaml
 [source,bash,subs="+attributes,macros+"]
 ----
 $ oc get route
-
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
 output: 
       NAME        HOST/PORT                                                    PATH   SERVICES    PORT   TERMINATION     WILDCARD
       catalog     catalog-demo.apps.cluster-hpxfn-1.sandbox933.opentlc.com            catalog     http   edge/Redirect   None
