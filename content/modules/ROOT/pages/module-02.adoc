@@ -120,7 +120,7 @@ The inventory information is missing but the {app_name} website is still visible
 image::coolstore-inventoryissue.png[width=80%]
 
 
-== Inventory Database on Retail Store - Single Node OpenShift (SNO)
+== Inventory Database on Retail Store - (SNO)
 
 * Login in the SNO using the terminal:
 
@@ -235,7 +235,7 @@ TODO-ADD PIC
 == Conclusion
 
 
-== More information:
+== More Information:
 
 * https://github.com/skupperproject[Interconnect: More use cases and examples^]
 

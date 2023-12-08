@@ -1,9 +1,14 @@
 
 * xref:module-01.adoc[1. Application Modernization and Developer Experience]
-** xref:module-01.adoc#introduction[Introduction]
+** xref:module-01.adoc#_introduction[Introduction]
 
 * xref:module-02.adoc[2. Extend to the edge and interconnect ]
-** xref:module-02.adoc#introduction[Introduction]
+** xref:module-02.adoc#_introduction[Introduction]
+** xref:module-02.adoc#_catalog_on_central_hub_openshift_on_aws[Catalog on Central Hub - OpenShift on AWS]
+** xref:module-02.adoc#_inventory_database_on_retail_store_sno[Inventory Database on Retail Store - (SNO)]
+** xref:module-02.adoc#_explore_services_and_connections_with_red_hat_service_interconnect_ui[Explore services and connections with Red Hat Service Interconnect UI]
+** xref:module-02.adoc#_conclusion[Conclusion]
+** xref:module-02.adoc#_more_information[More Information]
 
 * xref:module-03.adoc[3. Security and Automation in Software Delivery]
-** xref:module-03.adoc#introduction[Introduction]
+** xref:module-03.adoc#_introduction[Introduction]
