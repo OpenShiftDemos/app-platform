@@ -1,6 +1,8 @@
 
 * xref:module-01.adoc[1. Application Modernization and Developer Experience]
 ** xref:module-01.adoc#_introduction[Introduction]
+** xref:module-01.adoc#_conclusion[Conclusion]
+** xref:module-01.adoc#_more_information[More Information]
 
 * xref:module-02.adoc[2. Extend to the edge and interconnect ]
 ** xref:module-02.adoc#_introduction[Introduction]

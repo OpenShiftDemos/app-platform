@@ -24,6 +24,8 @@ This lab consists of 3 modules to enable you with hands-on to try solutions conn
 
 * Security and Automation in Software Delivery (30 mins)
 
+(TODO)
+
 === Lab Access (TODO)
 
 The terminal window to your right is *already* logged into the lab environment as the `{ssh_user}` user via `ssh`. 

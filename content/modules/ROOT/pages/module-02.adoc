@@ -36,12 +36,12 @@ Red Hat Service Interconnect operator is already installed.
 $ oc login -u %USERID% -p openshift 
 ----
 
-* Create a new project to deploy the catalog service, *catalog*. Run the following command in the terminal:
+* Create a new project to deploy the coolstore online marketplace, *catalog*. Run the following command in the terminal:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc new-project catalog-%USERID%
+oc new-project coolstore-%USERID%
 ----
 
 * Explore the yaml file that will deploy the catalog and the database.
@@ -58,7 +58,7 @@ $ cat coolstore.yaml
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc apply -f catalog.yaml
+oc apply -f coolstore.yaml
 ----
 [.console-output]
 [source,subs="+attributes,macros+"]
@@ -78,7 +78,7 @@ output:
       serviceaccount/globex-app-globex-ui created
       deployment.apps/globex-ui created
       service/globex-ui created
-      route.route.openshift.io/globex-ui created
+      route.route.openshift.io/globex-ui create
 ----
 
 * Create the secret required by Red Hat Service Interconnect to access the current namespace:
@@ -86,7 +86,7 @@ output:
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc apply -f secret.yaml
+oc apply -f secret-interconnect.yaml
 ----
 [.console-output]
 [source,subs="+attributes,macros+"]
@@ -97,7 +97,7 @@ output:
 
 $ oc get secret -o yaml secret-name | yq 'del(.metadata.namespace)' > token.yaml
 
-* From a webbrowser, access the coolstore application using the application route:
+* From a web browser, access the coolstore application using the application route:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -109,7 +109,7 @@ $ oc get route
 ----
 output: 
       NAME        HOST/PORT                                                    PATH   SERVICES    PORT   TERMINATION     WILDCARD
-      catalog     catalog-demo.apps.cluster-hpxfn-1.sandbox933.opentlc.com            catalog     http   edge/Redirect   None
+      ....
       globex-ui   globex-ui-demo.apps.cluster-hpxfn-1.sandbox933.opentlc.com          globex-ui   http   edge/Redirect   Non
 ----
 
@@ -215,22 +215,31 @@ $ oc get route
 [source,subs="+attributes,macros+"]
 ----
 output: 
-TODO output
+...
+skupper                skupper-demo-service.apps.cluster-rqk9v.rqk9v.sandbox1343.opentlc.com                       skupper          metrics        reencrypt/Redirect     None
 ----
 * Explore the different components
 
 ** Topology: Graphical representation of all the connections
+** Addresses:
+
+
+image::rhsi_addresses.png[width=80%]
+
+*** Click on the service:
+ - Throughput Bytes: Charts providing traffic related information
+
+The database will show receiving and sending traffic to the {app_name} site.
+
+image::rhsi_traffic.png[width=80%]
+
+
 ** Components: Services that are exposed on the service network, both local and remote.
 
 ** Sites: Application Interconnect installations on the current service network.
 
 Two sites will be visible, from the SNO (database) and OpenShift (coolstore)
 
-** Throughput Bytes: Charts providing traffic related information
-
-The database will show receiving and sending traffic to the {app_name} site.
-
-TODO-ADD PIC
 
 == Conclusion
 
