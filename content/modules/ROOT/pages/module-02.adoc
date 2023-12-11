@@ -3,15 +3,15 @@
 
 The open hybrid cloud approach enables applications to run anywhere and connect easily using the same tools without compromising security and availability. Decentralized systems are needed now more than ever to reduce latency, improve user experience, resiliency, and reduce costs.
 
-https://www.redhat.com/en/technologies/cloud-computing/service-interconnect[Red Hat Service Interconnect^]    allows connectivity between clusters, enabling developers to quickly and easily connect their applications without overhead.
+https://www.redhat.com/en/technologies/cloud-computing/service-interconnect[Red Hat Service Interconnect^] allows connectivity between clusters, enabling developers to quickly and easily connect their applications without overhead.
 
-https://www.redhat.com/en/technologies/device-edge[Red Hat Device Edge^] It allows organizations to deploy workloads closer to the end user location, providing flexibility with a right-sized platform. Red Hat Device Edge has many flavors. In this lab, you will work with an Single Node OpenShift (SNO).
+https://www.redhat.com/en/technologies/device-edge[Red Hat Device Edge^] It allows organizations to deploy workloads closer to the end user location, providing flexibility with a right-sized platform. Red Hat Device Edge has many flavors. You will work with the Single Node OpenShift (SNO).
 
 
 == A retail use case
-In the following example, we will explore a retail use case. Diverse industries can implement this proposed architecture or similar when two services or systems need to connect where they reside on different platforms/networks.
+In the following example, we will explore a retail use case. Diverse industries can implement this proposed architecture or similar when two services or systems running on different platforms need to connect.
 
-A retail store wants to install an application closer to end user location to gather inventory information from that particular location.
+A retail store wants to install an application closer to the end user location to gather inventory information from that particular location.
 
 image::edge_interconnect.png[width=80%]
 
@@ -22,7 +22,9 @@ image::edge_interconnect.png[width=80%]
 
 == Introduction
 
-In this lab, you will deploy a database in the Single Node OpenShift (SNO), expose it using Red Hat Service Interconnect to make it available to others to connect it.  In your Red Hat OpenShift running on AWS you will deploy a backend service that will connect to the database to gather information about inventory.
+In this lab, you will deploy a service and a database in the Single Node OpenShift (SNO), expose it using Red Hat Service Interconnect to make it available for others.  
+
+In your Red Hat OpenShift running on AWS you will deploy the rest of the {app_name}. The catalog service will connect to the inventory service to gather information about inventory.
 
 == Catalog on Central Hub - OpenShift on AWS
 
@@ -33,10 +35,10 @@ Red Hat Service Interconnect operator is already installed.
 [.console-input]
 [source,bash]
 ----
-$ oc login -u %USERID% -p openshift 
+oc login -u %USERID% -p %PASSWORD% 
 ----
 
-* Create a new project to deploy the coolstore online marketplace, *catalog*. Run the following command in the terminal:
+* Create a new project to deploy the {app_name}. Run the following command in the terminal:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -45,15 +47,20 @@ oc new-project coolstore-%USERID%
 ----
 
 * Explore the yaml file that will deploy the catalog and the database.
+
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-$ cd $HOME/app-platform/content/modules/ROOT/examples/module-02
-$ cat coolstore.yaml
+cd $HOME/app-platform/content/modules/ROOT/examples/module-02
 ----
 
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+cat coolstore.yaml
+----
 
-* Deploy the catalog by running the following commands in the terminal:
+* Deploy the rest of the {app_name}, by running the following commands in the terminal:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -78,10 +85,31 @@ output:
       serviceaccount/globex-app-globex-ui created
       deployment.apps/globex-ui created
       service/globex-ui created
-      route.route.openshift.io/globex-ui create
+      route.route.openshift.io/globex-ui created
 ----
 
 * Create the secret required by Red Hat Service Interconnect to access the current namespace:
+
+** Explore the yaml file (You will create this token on the SNO):
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+cat secret-interconnect.yaml
+----
+
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    skupper.io/type: connection-token-request
+  name: secret-interconnect
+----
+
+** Create the secret:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -92,17 +120,54 @@ oc apply -f secret-interconnect.yaml
 [source,subs="+attributes,macros+"]
 ----
 output: 
-      secret/secret-name created
+      secret/secret-interconnect created
 ----
 
-$ oc get secret -o yaml secret-name | yq 'del(.metadata.namespace)' > token.yaml
 
-* From a web browser, access the coolstore application using the application route:
+* Create the token required by Red Hat Service Interconnect to access the current namespace. This token is linked to the secret created recently:
+
+** Explore the secret file:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-$ oc get route
+oc get secret -o yaml secret-interconnect | yq 'del(.metadata.namespace)' > token.yaml
+----
+
+**Notes**: You can install **yq** using **brew install yq** or copy the secret content without the namespace into a new file called **token.yaml**.
+
+** Explore the yaml file:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+cat token.yaml
+----
+
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Secret","metadata":{"annotations":{},"labels":{"skupper.io/type":"connection-token-request"},"name":"secret-interconnect","namespace":"coolstore-user1"}}
+  creationTimestamp: "2023-12-11T22:30:44Z"
+  labels:
+    skupper.io/type: connection-token-request
+  name: secret-interconnect
+  resourceVersion: "454363"
+  uid: e381f96c-3beb-49b1-9e2d-0591679ba921
+type: Opaque
+----
+
+* From a web browser, access the {app_name} application using the application route:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc get route
 ----
 [.console-output]
 [source,subs="+attributes,macros+"]
@@ -115,7 +180,7 @@ output:
 
 **Notes**: 
 
-The inventory information is missing but the {app_name} website is still visible. Once access to the inventory database this will be resolved. In real situations, we want the {app_name}  to be idempotent against losing access to the inventory database.
+The inventory information is missing but the {app_name} website is still visible. Once access to the inventory database this will be resolved. In real situations, we want the {app_name} to be idempotent against losing access to the inventory service/database.
 
 image::coolstore-inventoryissue.png[width=80%]
 
@@ -127,7 +192,7 @@ image::coolstore-inventoryissue.png[width=80%]
 [.console-input]
 [source,bash]
 ----
-$ oc login -u %USERID% -p openshift 
+oc login -u %USERID% -p %PASSWORD% 
 ----
 
 * Create a new project to deploy the PostgreSQL database, *inventory*. Run the following command in the terminal:
@@ -142,8 +207,13 @@ oc new-project inventory-%USERID%
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-$ cd $HOME/app-platform/content/modules/ROOT/examples/module-02
-$ cat inventory-all.yaml
+cd $HOME/app-platform/content/modules/ROOT/examples/module-02
+----
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+cat inventory-all.yaml
 ----
 
 * Deploy the inventory database and backend service by running the following commands in the terminal:
@@ -151,8 +221,9 @@ $ cat inventory-all.yaml
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-$ oc apply -f inventory-all.yaml
+oc apply -f inventory-all.yaml
 ----
+
 [.console-output]
 [source,subs="+attributes,macros+"]
 ----
@@ -162,25 +233,27 @@ output:
       deployment.apps/inventory-database created
 ----
 
+* Create the token required by Red Hat Service Interconnect to access the {app_name}'s namespace. This token is linked to the secret created recently:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
 oc apply -f token.yaml
 ----
+
 [.console-output]
 [source,subs="+attributes,macros+"]
 ----
 output: 
-      secret/secret-name created
+      secret/secret-interconnect created
 ----
-
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
 skupper expose deployment inventory-database --port 5432
 ----
+
 [.console-output]
 [source,subs="+attributes,macros+"]
 ----
@@ -193,6 +266,7 @@ output:
 ----
 skupper link status
 ----
+
 [.console-output]
 [source,subs="+attributes,macros+"]
 ----
@@ -201,7 +275,6 @@ output
 	      Link secret-name is connected
 ----
 
-
 == Explore services and connections with Red Hat Service Interconnect UI
 
 * Using your web browser access the Red Hat Service Interconnect UI:
@@ -209,7 +282,7 @@ output
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-$ oc get route
+oc get route
 ----
 [.console-output]
 [source,subs="+attributes,macros+"]
