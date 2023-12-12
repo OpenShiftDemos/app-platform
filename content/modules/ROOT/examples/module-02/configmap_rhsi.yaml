@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skupper-site
+data:
+  console: "true"
+  console-user: "admin"
+  console-password: "ocp123"
+  flow-collector: "true"
