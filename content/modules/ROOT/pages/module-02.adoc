@@ -324,7 +324,7 @@ output:
 ** Go to the OpenShift on AWS
 ** oc get routes
 
-image::coolstore-fullworking.png[width=80%]
+image::coolstore_fullworking.png[width=80%]
 
 The inventory information is available now.
 
@@ -377,7 +377,8 @@ Two sites will be visible, from the SNO (retail-location) and OpenShift (retail-
 
 == Conclusion
 
-Congratulations on finishing this module!
+**Congratulations on finishing this module!**
+
 In this module, you connected two services, one residing on OpenShift on the cloud and the other on Singe Node OpenShift (part of the Red Hat Edge offerings). The applications were connected using Red Hat Service Interconnect. 
 
 == More Information:
