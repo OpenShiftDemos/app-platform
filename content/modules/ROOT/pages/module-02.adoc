@@ -3,9 +3,10 @@
 
 The open hybrid cloud approach enables applications to run anywhere and connect easily using the same tools without compromising security and availability. Decentralized systems are needed now more than ever to reduce latency, improve user experience, resiliency, and reduce costs.
 
-https://www.redhat.com/en/technologies/cloud-computing/service-interconnect[Red Hat Service Interconnect^] allows connectivity between clusters, enabling developers to quickly and easily connect their applications without overhead. Red Hat Service Interconnect is based on (https://skupper.io/index.html[Skupper^])
+https://www.redhat.com/en/technologies/cloud-computing/service-interconnect[Red Hat Service Interconnect^] allows connectivity between clusters, enabling developers to quickly and easily connect their applications without overhead. 
 
-https://www.redhat.com/en/technologies/device-edge[Red Hat Device Edge^] It allows organizations to deploy workloads closer to the end user location, providing flexibility with a right-sized platform. Red Hat Device Edge has many flavors. You will work with the Single Node OpenShift (SNO).
+
+https://www.redhat.com/en/products/edge[Red Hat Edge^] It allows organizations to deploy workloads closer to the end user location, providing flexibility with a right-sized platform. Red Hat Device Edge has many flavors. You will work with the Single Node OpenShift (SNO).
 
 
 == A retail use case
@@ -25,16 +26,6 @@ image::edge_interconnect.png[width=80%]
 In this lab, you will deploy a service and a database in the Single Node OpenShift (SNO), expose it using Red Hat Service Interconnect to make it available for others.  
 
 In your Red Hat OpenShift running on AWS you will deploy the rest of the {app_name}. The catalog service will connect to the inventory service to gather information about inventory.
-
-== Pre-reqs:
-
-** Install Red Hat Service InterconnectSI command line (skupper):
-
-* https://github.com/skupperproject/skupper-example-hello-world#step-1-install-the-skupper-command-line-tool[Install Skupper^]
-
-
-* https://skupper.io/install/index.html[For Windows and other installation options^]
-
 
 == Catalog on Central Hub - OpenShift on AWS
 
@@ -148,22 +139,25 @@ output:
 ----
 
 
-* Create the token required by Red Hat Service Interconnect to access the current namespace. This token is linked to the secret created recently:
-
+* Create the secret required by Red Hat Service Interconnect to access the current namespace. This token is linked to the secret created recently:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-skupper token create coolstore.token
+oc apply -f secret-interconnect.yaml
 ----
-
 [.console-output]
-[source,bash,subs="+attributes,macros+"]
+[source,subs="+attributes,macros+"]
 ----
 output: 
-      Token written to coolstore.token
+      secret/secret-interconnect created
 ----
 
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+$ oc get secret -o yaml secret-interconnect | yq 'del(.metadata.namespace)' > token.yaml
+----
 
 * From a web browser, access the {app_name} application using the application route:
 
@@ -274,26 +268,22 @@ output:
       NAME                                          READY   STATUS    RESTARTS   AGE
       inventory-67fffc6d57-94v8j                    1/1     Running   0          2m42s
       inventory-database-5f4565cc5f-strc2           1/1     Running   0          2m42s
-      skupper-prometheus-766fd865b-zjdrp            1/1     Running   0          6s
       skupper-router-7b787c887f-pwclh               2/2     Running   0          9s
       skupper-service-controller-7f6fb474ff-t4zkl   1/2     Running   0          7s
 ----
-
 
 * Create the token required by Red Hat Service Interconnect to access the {app_name}'s namespace. This token is linked to the secret created recently:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-skupper link create coolstore.token
+oc apply -f token.yaml
 ----
-
 [.console-output]
 [source,subs="+attributes,macros+"]
 ----
 output: 
-      Site configured to link to ...
-      ...
+      secret/secret-interconnect created
 ----
 
 * Using skupper to expose the deployment will create a service with the specified port and service name. In 
@@ -301,14 +291,14 @@ output:
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-skupper expose deployment inventory --port 8080 --address inventory-quarkus
+oc annotate deployment/inventory skupper.io/proxy="http"
 ----
 
 [.console-output]
 [source,subs="+attributes,macros+"]
 ----
 output: 
-      deployment inventory exposed as inventory-quarkus
+      deployment.apps/inventory annotated
 ----
 
 [.console-input]
@@ -321,13 +311,22 @@ oc get services
 [source,subs="+attributes,macros+"]
 ----
 output:
-      NAME                   TYPE        CLUSTER-IP       inventory-database     ClusterIP   172.31.173.139   <none>        5432/TCP              9m19s
-      inventory-quarkus      ClusterIP   172.31.99.44     <none>        8080/TCP              13s
-      skupper                ClusterIP   172.31.95.90     <none>        8010/TCP,8081/TCP     6m44s
-      skupper-prometheus     ClusterIP   172.31.107.23    <none>        9090/TCP              6m43s
-      skupper-router         ClusterIP   172.31.165.115   <none>        55671/TCP,45671/TCP   6m46s
-      skupper-router-local   ClusterIP   172.31.11.245    <none>        5671/TCP              6m46s
+      NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)               AGE
+      inventory              ClusterIP   172.31.27.181    <none>        8080/TCP              9s
+      inventory-database     ClusterIP   172.31.90.129    <none>        5432/TCP              91s
+      skupper                ClusterIP   172.31.53.198    <none>        8081/TCP              97s
+      skupper-router         ClusterIP   172.31.248.104   <none>        55671/TCP,45671/TCP   98s
+      skupper-router-local   ClusterIP   172.31.9.18      <none>        5671/TCP              98s
 ----
+
+* Verify that the application is fully functional with the inventory information:
+
+** Go to the OpenShift on AWS
+** oc get routes
+
+image::coolstore-fullworking.png[width=80%]
+
+The inventory information is available now.
 
 == Explore services and connections with Red Hat Service Interconnect UI (Central Hub - OpenShift on AWS)
 
@@ -348,8 +347,15 @@ skupper                skupper-demo-service.apps.cluster-rqk9v.rqk9v.sandbox1343
 * Explore the different components
 
 ** Topology: Graphical representation of all the connections
+
+Two sites were created: Hub and retail location.
+
+image::rhsi_sites.png[width=80%]
+
+
 ** Addresses:
 
+The exposed deployment is shown here and available to connect using the specific address.
 
 image::rhsi_addresses.png[width=80%]
 
@@ -365,14 +371,26 @@ image::rhsi_traffic.png[width=80%]
 
 ** Sites: Application Interconnect installations on the current service network.
 
-Two sites will be visible, from the SNO (database) and OpenShift (coolstore)
+Two sites will be visible, from the SNO (retail-location) and OpenShift (retail-hub)
+
+
 
 == Conclusion
 
+Congratulations on finishing this module!
+In this module, you connected two services, one residing on OpenShift on the cloud and the other on Singe Node OpenShift (part of the Red Hat Edge offerings). The applications were connected using Red Hat Service Interconnect. 
 
 == More Information:
 
-=== Red Hat Device Edge
+=== Red Hat Edge
+
+https://www.redhat.com/en/products/edge[Red Hat Edge]
+
+https://www.redhat.com/en/technologies/device-edge[Red Hat Device Edge^] 
+
+https://developers.redhat.com/articles/2023/11/16/red-hat-openshifts-flexibility-our-topologies-your-topographies[Red Hat Edge platforms: More options for more use cases^]
+
+https://developers.redhat.com/articles/2023/11/14/red-hat-edge-platforms-more-options-more-use-cases[Red Hat Edge Platforms: More options for more use cases]
 
 === Red Hat Service Interconnect
 * https://github.com/skupperproject[Interconnect: More use cases and examples^]

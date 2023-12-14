@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: skupper-site
 data:
+  name: retail-hub
   console: "true"
   console-user: "admin"
   console-password: "ocp123"
