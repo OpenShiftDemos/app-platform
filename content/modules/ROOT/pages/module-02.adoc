@@ -286,7 +286,7 @@ output:
       secret/secret-interconnect created
 ----
 
-* Using skupper to expose the deployment will create a service with the specified port and service name. In 
+* Expose the deployment will create a service to be accessible to the connected sites. 
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -322,7 +322,13 @@ output:
 * Verify that the application is fully functional with the inventory information:
 
 ** Go to the OpenShift on AWS
-** oc get routes
+** Access the route 
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc get routes
+----
 
 image::coolstore_fullworking.png[width=80%]
 
@@ -346,16 +352,14 @@ skupper                skupper-demo-service.apps.cluster-rqk9v.rqk9v.sandbox1343
 ----
 * Explore the different components
 
-** Topology: Graphical representation of all the connections
+** **Topology**: Graphical representation of all the connections
 
 Two sites were created: Hub and retail location.
 
 image::rhsi_sites.png[width=80%]
 
 
-** Addresses:
-
-The exposed deployment is shown here and available to connect using the specific address.
+** **Addresses**: The exposed deployment is shown here and available to connect using the specific address.
 
 image::rhsi_addresses.png[width=80%]
 
@@ -366,20 +370,20 @@ The database will show receiving and sending traffic to the {app_name} site.
 
 image::rhsi_traffic.png[width=80%]
 
+** **Components**: Services that are exposed on the service network, both local and remote.
 
-** Components: Services that are exposed on the service network, both local and remote.
-
-** Sites: Application Interconnect installations on the current service network.
+** **Sites**: Application Interconnect installations on the current service network.
 
 Two sites will be visible, from the SNO (retail-location) and OpenShift (retail-hub)
-
 
 
 == Conclusion
 
 **Congratulations on finishing this module!**
 
-In this module, you connected two services, one residing on OpenShift on the cloud and the other on Singe Node OpenShift (part of the Red Hat Edge offerings). The applications were connected using Red Hat Service Interconnect. 
+In this module, you connected two services, one residing on OpenShift on the cloud and the other on Singe Node OpenShift (part of the Red Hat Edge offerings). 
+
+The applications were connected using Red Hat Service Interconnect. RHSI allows connectivity between multiple clusters but also at the edge. 
 
 == More Information:
 
