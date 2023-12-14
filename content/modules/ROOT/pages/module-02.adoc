@@ -385,13 +385,15 @@ In this module, you connected two services, one residing on OpenShift on the clo
 
 === Red Hat Edge
 
-https://www.redhat.com/en/products/edge[Red Hat Edge]
+* https://www.redhat.com/en/products/edge[Red Hat Edge^]
 
-https://www.redhat.com/en/technologies/device-edge[Red Hat Device Edge^] 
+* https://www.redhat.com/en/technologies/cloud-computing/openshift/edge-computing[Edge computing with Red Hat OpenShift^]
 
-https://developers.redhat.com/articles/2023/11/16/red-hat-openshifts-flexibility-our-topologies-your-topographies[Red Hat Edge platforms: More options for more use cases^]
+* https://www.redhat.com/en/technologies/device-edge[Red Hat Device Edge^] 
 
-https://developers.redhat.com/articles/2023/11/14/red-hat-edge-platforms-more-options-more-use-cases[Red Hat Edge Platforms: More options for more use cases]
+* https://developers.redhat.com/articles/2023/11/16/red-hat-openshifts-flexibility-our-topologies-your-topographies[Red Hat Edge platforms: More options for more use cases^]
+
+* https://developers.redhat.com/articles/2023/11/14/red-hat-edge-platforms-more-options-more-use-cases[Red Hat Edge Platforms: More options for more use cases^]
 
 === Red Hat Service Interconnect
 * https://github.com/skupperproject[Interconnect: More use cases and examples^]
