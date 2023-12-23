@@ -13,11 +13,16 @@ In your Red Hat OpenShift running on AWS you will deploy the rest of the {app_na
 === Move the application
 
 1. Access Developer Perspective
+
+image::devexp_git.png[width=80%] 
+
 2. Click on  *+Add*
 3. Import from Git
 4. Select the checkbox: Pipelines
 5. Advanced options:
+
 5.1 Selected the checkbox: Create a route
+
 5.2 Select the Deployment type: Serverless
 6. Click on Create button
 
@@ -33,12 +38,21 @@ Review your application Pipelines:
 
 TODO add image
 
-Review your application Topology:
+Test your application using the Topology view:
 
-1. Access Developer Perspective
-2. Click on Topology
+* Access Developer Perspective
+* Click on Topology
 
 TODO add image
+
+* Click on the deployment arrow:
+* Verify the application is running on your web browser 
+
+TODO add image
+
+Test your application:
+
+=== Move the application
 
 
 == Conclusion
