@@ -1,8 +1,44 @@
-= Application Modernization and Developer Experience  (30 mins)
+= Application Modernization and Developer Experience with cloud services (30 mins)
+
+In this module you will explore the OpenShift Developer experience to understand developers' journey, daily activities, and how OpenShift Application Platform brings developer productivity by reducing complexity and overhead from operations. 
+
 
 == Introduction
 
-In this lab, 
+In this lab, you will move an application to OpenShift using the Developer Perspective. That's all.  Using the Developer Perspective allow developers to move their applications quickly with a click of a button. 
+
+In your Red Hat OpenShift running on AWS you will deploy the rest of the {app_name}. OpenShift already has installed OpenShift Serverless and OpenShift Pipelines Operators.
+
+
+=== Move the application
+
+1. Access Developer Perspective
+2. Click on  *+Add*
+3. Import from Git
+4. Select the checkbox: Pipelines
+5. Advanced options:
+5.1 Selected the checkbox: Create a route
+5.2 Select the Deployment type: Serverless
+6. Click on Create button
+
+Verify your configuration matches this:
+
+TODO add image
+
+Review your application Pipelines:
+
+
+1. Access Developer Perspective
+2. Click on Pipelines
+
+TODO add image
+
+Review your application Topology:
+
+1. Access Developer Perspective
+2. Click on Topology
+
+TODO add image
 
 
 == Conclusion
