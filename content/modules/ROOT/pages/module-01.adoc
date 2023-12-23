@@ -1,4 +1,5 @@
 = Application Modernization and Developer Experience with cloud services (30 mins)
+:imagesdir: ../assets/images/module1
 
 In this module you will explore the OpenShift Developer experience to understand developers' journey, daily activities, and how OpenShift Application Platform brings developer productivity by reducing complexity and overhead from operations. 
 
@@ -28,7 +29,8 @@ image::devexp_git.png[width=80%]
 
 Verify your configuration matches this:
 
-TODO add image
+
+image::devexp_git.png[width=80%] 
 
 Review your application Pipelines:
 
@@ -36,19 +38,22 @@ Review your application Pipelines:
 1. Access Developer Perspective
 2. Click on Pipelines
 
-TODO add image
+
+image::devexp_git.png[width=80%] 
 
 Test your application using the Topology view:
 
 * Access Developer Perspective
 * Click on Topology
 
-TODO add image
+
+image::devexp_git.png[width=80%] 
 
 * Click on the deployment arrow:
 * Verify the application is running on your web browser 
 
-TODO add image
+
+image::devexp_git.png[width=80%] 
 
 Test your application:
 
