@@ -15,7 +15,7 @@ In your Red Hat OpenShift running on AWS you will deploy the rest of the {app_na
 
 1. Access Developer Perspective
 
-image::devexp_git.png[width=80%] 
+image::devexp_git.png[width=80%]
 
 2. Click on  *+Add*
 3. Import from Git
@@ -30,7 +30,7 @@ image::devexp_git.png[width=80%]
 Verify your configuration matches this:
 
 
-image::devexp_git.png[width=80%] 
+image::devexp_git.png[width=80%]
 
 Review your application Pipelines:
 
@@ -39,7 +39,7 @@ Review your application Pipelines:
 2. Click on Pipelines
 
 
-image::devexp_git.png[width=80%] 
+image::devexp_git.png[width=80%]
 
 Test your application using the Topology view:
 
@@ -47,7 +47,7 @@ Test your application using the Topology view:
 * Click on Topology
 
 
-image::devexp_git.png[width=80%] 
+image::devexp_git.png[width=80%]
 
 * Click on the deployment arrow:
 * Verify the application is running on your web browser 
