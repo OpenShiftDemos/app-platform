@@ -133,7 +133,7 @@ image::coolstore_website_black.png[width=80%]
 
 *Congratulations* you build and deploy a new application into OpenShift in just few clicks!
 
-== Building your first Serverless Java application using with OpenShift Application Platform
+== Building your first Serverless backend application using with OpenShift Application Platform
 In this section you will move the catalog Java Spring Boot application into OpenShift using the Developer Perspective using the Serverless Deployment. OpenShift will create an automated ci/cd pipeline as well as all the manifests required by the application.
 
 1. Access Developer Perspective
