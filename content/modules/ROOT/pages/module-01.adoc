@@ -8,59 +8,191 @@ In this module you will explore the OpenShift Developer experience to understand
 
 In this lab, you will move an application to OpenShift using the Developer Perspective. That's all.  Using the Developer Perspective allow developers to move their applications quickly with a click of a button. 
 
-In your Red Hat OpenShift running on AWS you will deploy the rest of the {app_name}. OpenShift already has installed OpenShift Serverless and OpenShift Pipelines Operators.
+In your Red Hat OpenShift running on AWS you will deploy the rest of the {app_name}. OpenShift already has installed OpenShift Serverless and https://docs.openshift.com/pipelines/1.13/install_config/installing-pipelines.html#op-installing-pipelines-operator-in-web-console_installing-pipelines[OpenShift Pipelines Operators^].
 
+== Building your first UI application with OpenShift Application Platform
+=== Create your project
+* Log in the OpenShift using the terminal:
 
-=== Move the application
+[.console-input]
+[source,bash]
+----
+oc login -u %USERID% -p %PASSWORD% 
+----
+
+* Create a new project to deploy the {app_name}. Run the following command in the terminal:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc new-project coolstore-dev-%USERID%
+----
+
+* Explore the yaml file that will deploy the catalog and the database.
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+cd $HOME/app-platform/content/modules/ROOT/examples/module-01
+----
+
+* Install the the coolstore components
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc apply -f coolstore.yaml
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output:
+    deployment.apps/catalog-spring-boot created
+    service/catalog-spring-boot created
+    deployment.apps/gateway-vertx created
+    service/gateway-vertx created
+    route.route.openshift.io/gateway-vertx created
+    deployment.apps/inventory-quarkus created
+    service/inventory-quarkus created
+    serviceaccount/catalog-app created
+    secret/catalog-database created
+    deployment.apps/catalog-database created
+    service/catalog-database created
+----
+
+=== Explore the topology view
+The Topology view in the Developer perspective of the web console provides a visual representation of all the applications within a project, their build status, and the components and services associated with them.
+
+==== Review the set of microservices that composed the coolstore application
 
 1. Access Developer Perspective
+2. Click on Topology
+3. Click on the object *web-nodejs-git*
 
-image::devexp_git.png[width=80%]
 
+image::coolstore_topology.png[width=80%]
+
+All the components shown are deployments which are in charge of managing your application. They are all in blue indicating the application is running.  The arrows will indicate which components are connected. 
+
+https://docs.openshift.com/container-platform/latest/applications/odc-viewing-application-composition-using-topology-view.html[For more information^]
+
+- *Gateway-vertx*: Is a Java Application that works as a gateway between the UI and the rest of the application services.
+- *Catalog*: Is a Java based application built with Spring Boot that connect with the Catalog Database to provide all the catalog information. Without this service the catalog data will not be visible in the UI.
+- *Inventory*: Is a Java based application built with Quarkus that provides the inventory information for each specific product. The information is shown in the UI as how much quantity is left: " x left"
+
+As you can see everything is there except the UI. In the next section you will be moving the UI into OpenShift.
+
+=== Import the application
+
+In this section you will move the UI source code into OpenShift using the Developer Perspective. OpenShift will create an automated ci/cd pipeline as well as all the manifests required by the application.
+
+1. Access Developer Perspective
 2. Click on  *+Add*
 3. Import from Git
-4. Select the checkbox: Pipelines
-5. Advanced options:
+4. Git Repo URL: https://github.com/OpenShiftDemos/web-nodejs.git
+5. Edit *Import Strategy* and select *Builder Image* (keep Node.js and Builder Image version: 16-ubi8)
+6. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
+    - *name*: SECURE_COOLSTORE_GW_ENDPOINT
+    - *value*: https://gateway-vertx-coolstore-dev-user<REPLACEME_USERID>.apps.cluster-<REPLACEME_CLUSTER_ID>.opentlc.com/
 
-5.1 Selected the checkbox: Create a route
+7. Select the checkbox: *Pipelines*
+8. Click on *Create*
 
-5.2 Select the Deployment type: Serverless
-6. Click on Create button
+https://docs.openshift.com/container-platform/latest/applications/creating_applications/odc-creating-applications-using-developer-perspective.html[For more information^]
 
-Verify your configuration matches this:
+==== Review the topology:
 
+The UI is now shown on the topology view:
 
-image::devexp_git.png[width=80%]
+- Web NodeJS: The application recently created is the UI enabling users to interact with the coolstore.
 
-Review your application Pipelines:
+1. Click on the web nodejs deployment
+2. Analyze the Details and Resources tab:
+3. Click on the pipelines -> Pipeline Runs -> Select the Running Pipeline.
+4. Verify the pipeline is running and everything is green.
 
+**Notes**: The pipeline might take a few minutes to complete.
+
+image::pipeline_webui.png[width=80%]
+
+Once the Pipeline has finished it will shown as Pipeline Succeeded and Pod will be running.
+
+image::coolstore_topology_all.png[width=80%]
+
+* Go back to the topology view: Click on Topology on the left menu.
+* Explore the application logs by clicking on *View logs* on the Pod section.
+
+image::logs_webui.png[width=80%]
+
+==== Verify the application is running as expected
+
+* Go back to the topology view: Click on Topology on the left menu.
+* Click on the deployment's arrow:
+* Verify the application is running on your web browser
+
+image::coolstore_website.png[width=80%]
+
+*Congratulations* you build and deploy a new application into OpenShift in just few clicks!
+
+== Building your first Serverless Java application using with OpenShift Application Platform
+In this section you will move the catalog Java Spring Boot application into OpenShift using the Developer Perspective using the Serverless Deployment. OpenShift will create an automated ci/cd pipeline as well as all the manifests required by the application.
 
 1. Access Developer Perspective
-2. Click on Pipelines
+2. Click on  *+Add*
+3. Import from Git
+4. Git Repo URL: https://github.com/coolstore-demo/catalog-spring-boot.git
+5. Edit *Import Strategy* and select *Builder Image* (keep Java and Builder Image version: openjdk-17-ubi8)
+6. Name: catalog 
+7. On Resources, select Serverless Deployment
+8. Select the checkbox: *Pipelines*
+9. Click on *Create*
+
+==== Explore the serverless application
+
+* In the topology view: Click on Topology on the left menu.
+* Verify a new deployment object was created: catalog-spring-booth-versionnumber-deployment
+* Access the application URL
+
+==== Observe the application CPU usage
+
+* In the topology view: Click on Topology on the left menu.
+* Access the Observe tab.
 
 
-image::devexp_git.png[width=80%]
+==== Verify the application is running as expected
 
-Test your application using the Topology view:
+* Go back to the topology view: Click on Topology on the left menu.
+* Click on the deployment's arrow:
+* Verify the application is running on your web browser
 
-* Access Developer Perspective
-* Click on Topology
-
-
-image::devexp_git.png[width=80%]
-
-* Click on the deployment arrow:
-* Verify the application is running on your web browser 
+image::coolstore_website.png[width=80%]
 
 
-image::devexp_git.png[width=80%] 
 
-Test your application:
+== Update the title of the application
+As developers, we work on applications making new features, resolving bugs. In this opportunity, you will have the chance to resolve a bug that requires you to update the title of the application.
 
-=== Move the application
+1. Open Red Hat OpenShift Dev Spaces
+2. Log in with your OpenShift credentials
+3. Allow access
+4. Goto the files: *views/partials/header.html*
+5. Replace the current title: *Red Hat Cool Store* to *Red Hat Cool Store - Your City* For example: *Red Hat Cool Store - Las Vegas*
+6. Click on the Source Control icon, Commit and Push your changes.
+
+image::devspaces.png[width=80%]
+
 
 
 == Conclusion
 
 
 == More Information:
+
+* https://docs.openshift.com/container-platform/latest/applications/creating_applications/odc-creating-applications-using-developer-perspective.html[Creating applications using the Developer perspective^]
+* https://docs.openshift.com/container-platform/latest/applications/odc-viewing-application-composition-using-topology-view.html[Viewing application composition using the Topology view^]
+
+* https://docs.openshift.com/pipelines/1.13/create/working-with-pipelines-web-console.html[Working with Red Hat OpenShift Pipelines in the web console^]
+
+* https://access.redhat.com/documentation/en-us/red_hat_openshift_dev_spaces/3.0/html/user_guide/adopting-che[Adopting OpenShift Dev Spaces^]
+
+* https://developers.redhat.com/developer-sandbox/ide[Try Red Hat OpenShift Dev Spaces]

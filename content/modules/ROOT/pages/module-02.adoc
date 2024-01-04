@@ -395,7 +395,7 @@ The applications were connected using Red Hat Service Interconnect. RHSI allows 
 
 * https://www.redhat.com/en/technologies/device-edge[Red Hat Device Edge^] 
 
-* https://developers.redhat.com/articles/2023/11/16/red-hat-openshifts-flexibility-our-topologies-your-topographies[Red Hat Edge platforms: More options for more use cases^]
+* https://developers.redhat.com/articles/2023/11/16/red-hat-openshifts-flexibility-our-topologies-your-topographies[Red Hat OpenShift's flexibility: Our topologies for your topographies^]
 
 * https://developers.redhat.com/articles/2023/11/14/red-hat-edge-platforms-more-options-more-use-cases[Red Hat Edge Platforms: More options for more use cases^]
 
