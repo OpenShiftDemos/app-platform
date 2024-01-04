@@ -132,7 +132,7 @@ image::coolstore_website_black.png[width=80%]
 
 * Explore the application logs by clicking on *View logs* on the Pod section.
 
-image::logs_webui.png[width=80%]
+image::logs_webui.png[width=60%]
 
 **Notes**: As you can see there is no catalog available. We need to install the catalog application to access the catalog data.
 
@@ -155,7 +155,7 @@ In this section you will move the catalog Java Spring Boot application into Open
 * In the topology view: Click on Topology on the left menu.
 * Access the Observe tab.
 
-image::coolstore_topology_usage.png[width=80%]
+image::coolstore_topology_usage.png[width=60%]
 
 ==== Verify the application is running as expected
 * Go back to the topology view: Click on Topology on the left menu.
