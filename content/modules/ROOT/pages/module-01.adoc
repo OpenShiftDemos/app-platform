@@ -10,7 +10,15 @@ In this lab, you will move an application to OpenShift using the Developer Persp
 
 In your Red Hat OpenShift running on AWS you will deploy the rest of the {app_name}. OpenShift already has installed OpenShift Serverless and https://docs.openshift.com/pipelines/1.13/install_config/installing-pipelines.html#op-installing-pipelines-operator-in-web-console_installing-pipelines[OpenShift Pipelines Operators^].
 
-== Building your first UI application with OpenShift Application Platform
+
+== Application Overview
+
+- *Web NodeJS*: The application recently created is the UI enabling users to interact with the coolstore.
+- *Gateway-vertx*: Is a Java Application that works as a gateway between the UI and the rest of the application services.
+- *Inventory*: Is a Java based application built with Quarkus that provides the inventory information for each specific product. The information is shown in the UI as how much quantity is left: " x left"
+- *Catalog*: Is a Java based application built with Spring Boot that connect with the Catalog Database to provide all the catalog information. Without this service the catalog data will not be visible in the UI.
+
+== Building your first Serverless application with OpenShift Application Platform
 === Create your project
 * Log in the OpenShift using the terminal:
 
@@ -74,10 +82,7 @@ All the components shown are deployments which are in charge of managing your ap
 
 https://docs.openshift.com/container-platform/latest/applications/odc-viewing-application-composition-using-topology-view.html[For more information^]
 
-- *Gateway-vertx*: Is a Java Application that works as a gateway between the UI and the rest of the application services.
-- *Inventory*: Is a Java based application built with Quarkus that provides the inventory information for each specific product. The information is shown in the UI as how much quantity is left: " x left"
-
-As you can see everything is there except the UI. In the next section you will be moving the UI into OpenShift.
+As you can see everything is there except the UI and the catalog. In the next section you will be moving the UI into OpenShift.
 
 === Import the application
 
@@ -88,25 +93,21 @@ In this section you will move the UI source code into OpenShift using the Develo
 3. Import from Git
 4. Git Repo URL: https://github.com/OpenShiftDemos/web-nodejs.git
 5. Edit *Import Strategy* and select *Builder Image* (keep Node.js and Builder Image version: 16-ubi8)
-6. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
+6. On Resources, select Serverless Deployment
+7. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
     - *name*: SECURE_COOLSTORE_GW_ENDPOINT
     - *value*: https://gateway-vertx-coolstore-dev-user<REPLACEME_USERID>.apps.cluster-<REPLACEME_CLUSTER_ID>.opentlc.com/
 
-7. Select the checkbox: *Pipelines*
-8. Click on *Create*
+8. Select the checkbox: *Pipelines*
+9. Click on *Create*
 
 https://docs.openshift.com/container-platform/latest/applications/creating_applications/odc-creating-applications-using-developer-perspective.html[For more information^]
 
 ==== Review the topology:
 
-The UI is now shown on the topology view:
-
-- Web NodeJS: The application recently created is the UI enabling users to interact with the coolstore.
-
-1. Click on the web nodejs deployment
-2. Analyze the Details and Resources tab:
-3. Click on the pipelines -> Pipeline Runs -> Select the Running Pipeline.
-4. Verify the pipeline is running and everything is green.
+1. Click on Pipelines
+2. Click on the pipelines -> Pipeline Runs -> Select the Running Pipeline.
+3. Verify the pipeline is running and everything is green.
 
 **Notes**: The pipeline might take a few seconds to complete.
 
@@ -114,60 +115,58 @@ image::pipeline_webui.png[width=80%]
 
 Once the Pipeline has finished it will shown as Pipeline Succeeded and Pod will be running.
 
-image::coolstore_topology_all.png[width=80%]
-
 * Go back to the topology view: Click on Topology on the left menu.
-* Explore the application logs by clicking on *View logs* on the Pod section.
 
-image::logs_webui.png[width=80%]
+image::coolstore_topology_web.png[width=80%]
+
+There is a new deployment object with no pods running. 
+The serverless deployment will be triggered once it starts receiving http requests when accessing the application in the web browser.
 
 ==== Verify the application is running as expected
 
-* Go back to the topology view: Click on Topology on the left menu.
-* Click on the deployment's arrow:
-* Verify the application is running on your web browser
+ 
+* Verify the application is running on your web browser with URL:    
+https://web-nodejs-git-coolstore-dev-%USERID%.apps.cluster-<>.opentlc.com
 
 image::coolstore_website_black.png[width=80%]
+
+* Explore the application logs by clicking on *View logs* on the Pod section.
+
+image::logs_webui.png[width=80%]
 
 **Notes**: As you can see there is no catalog available. We need to install the catalog application to access the catalog data.
 
 *Congratulations* you build and deploy a new application into OpenShift in just few clicks!
 
-== Building your first Serverless backend application using with OpenShift Application Platform
-In this section you will move the catalog Java Spring Boot application into OpenShift using the Developer Perspective using the Serverless Deployment. OpenShift will create an automated ci/cd pipeline as well as all the manifests required by the application.
+== Building your first backend application using with OpenShift Application Platform
+In this section you will move the catalog Java Spring Boot application into OpenShift using the Developer Perspective. OpenShift will create an automated ci/cd pipeline as well as all the manifests required by the application.
 
 1. Access Developer Perspective
 2. Click on  *+Add*
 3. Import from Git
 4. Git Repo URL: https://github.com/coolstore-demo/catalog-spring-boot.git
 5. Edit *Import Strategy* and select *Builder Image* (keep Java and Builder Image version: openjdk-17-ubi8)
-6. Name: catalog 
-7. On Resources, select Serverless Deployment
+6. Name: catalog-spring-boot 
 8. Select the checkbox: *Pipelines*
 9. Click on *Create*
 
-==== Explore the serverless application
-
-- *Catalog*: Is a Java based application built with Spring Boot that connect with the Catalog Database to provide all the catalog information. Without this service the catalog data will not be visible in the UI.
-
-
-* In the topology view: Click on Topology on the left menu.
-* Verify a new deployment object was created: catalog-spring-booth-versionnumber-deployment
-* Access the application URL.
 
 ==== Observe the application CPU usage
-
 * In the topology view: Click on Topology on the left menu.
 * Access the Observe tab.
 
+image::coolstore_topology_usage.png[width=80%]
 
 ==== Verify the application is running as expected
-
 * Go back to the topology view: Click on Topology on the left menu.
 * Click on the deployment's arrow:
 * Verify the application is running on your web browser
 
 image::coolstore_website.png[width=80%]
+
+
+
+
 
 
 
