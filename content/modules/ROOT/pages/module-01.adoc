@@ -47,8 +47,6 @@ oc apply -f coolstore.yaml
 [source,subs="+attributes,macros+"]
 ----
 output:
-    deployment.apps/catalog-spring-boot created
-    service/catalog-spring-boot created
     deployment.apps/gateway-vertx created
     service/gateway-vertx created
     route.route.openshift.io/gateway-vertx created
@@ -77,7 +75,6 @@ All the components shown are deployments which are in charge of managing your ap
 https://docs.openshift.com/container-platform/latest/applications/odc-viewing-application-composition-using-topology-view.html[For more information^]
 
 - *Gateway-vertx*: Is a Java Application that works as a gateway between the UI and the rest of the application services.
-- *Catalog*: Is a Java based application built with Spring Boot that connect with the Catalog Database to provide all the catalog information. Without this service the catalog data will not be visible in the UI.
 - *Inventory*: Is a Java based application built with Quarkus that provides the inventory information for each specific product. The information is shown in the UI as how much quantity is left: " x left"
 
 As you can see everything is there except the UI. In the next section you will be moving the UI into OpenShift.
@@ -111,7 +108,7 @@ The UI is now shown on the topology view:
 3. Click on the pipelines -> Pipeline Runs -> Select the Running Pipeline.
 4. Verify the pipeline is running and everything is green.
 
-**Notes**: The pipeline might take a few minutes to complete.
+**Notes**: The pipeline might take a few seconds to complete.
 
 image::pipeline_webui.png[width=80%]
 
@@ -130,7 +127,9 @@ image::logs_webui.png[width=80%]
 * Click on the deployment's arrow:
 * Verify the application is running on your web browser
 
-image::coolstore_website.png[width=80%]
+image::coolstore_website_black.png[width=80%]
+
+**Notes**: As you can see there is no catalog available. We need to install the catalog application to access the catalog data.
 
 *Congratulations* you build and deploy a new application into OpenShift in just few clicks!
 
@@ -149,9 +148,12 @@ In this section you will move the catalog Java Spring Boot application into Open
 
 ==== Explore the serverless application
 
+- *Catalog*: Is a Java based application built with Spring Boot that connect with the Catalog Database to provide all the catalog information. Without this service the catalog data will not be visible in the UI.
+
+
 * In the topology view: Click on Topology on the left menu.
 * Verify a new deployment object was created: catalog-spring-booth-versionnumber-deployment
-* Access the application URL
+* Access the application URL.
 
 ==== Observe the application CPU usage
 
