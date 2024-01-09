@@ -58,7 +58,7 @@ oc new-project coolstore-%USERID%
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-cd $HOME/app-platform/content/modules/ROOT/examples/module-02
+cd $HOME/app-platform/content/modules/ROOT/files/module-02
 ----
 
 [.console-input]
@@ -224,7 +224,7 @@ oc new-project inventory-%USERID%
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-cd $HOME/app-platform/content/modules/ROOT/examples/module-02
+cd $HOME/app-platform/content/modules/ROOT/files/module-02
 ----
 
 [.console-input]
@@ -302,6 +302,7 @@ output:
 ----
 
 * Create the token required by Red Hat Service Interconnect to access the {app_name}'s namespace. This token is linked to the secret created recently:
+
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
@@ -315,12 +316,30 @@ output:
       ...
 ----
 
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+skupper link status
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output: 
+      Links created from this site:
+
+            Link link1 is connected
+
+      Current links from other sites that are connected:
+
+            There are no connected links
+----
+
 * Expose the deployment will create a service to be accessible to the connected sites. 
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc annotate deployment/inventory skupper.io/proxy="http"
+skupper expose deployment inventory
 ----
 
 [.console-output]
@@ -415,6 +434,180 @@ Two sites will be visible, from the SNO (retail-location) and OpenShift (retail-
 In this module, you connected two services, one residing on OpenShift on the cloud and the other on Singe Node OpenShift (part of the Red Hat Edge offerings). 
 
 The applications were connected using Red Hat Service Interconnect. RHSI allows connectivity between multiple clusters but also at the edge. 
+
+== Bonus point using a declarative approach:
+In this section, you will move the database to a new namespace and to connect the database with the inventory service; this section follows a declarative approach; we do not need the skupper CLI.
+
+* Remove the database from the current namespace
+
+** Start by deleting the database components.
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc delete deployment inventory-database
+oc delete service inventory-database
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output: 
+      deployment.apps "inventory-database" deleted
+      service "inventory-database" deleted
+----
+
+** From a web browser, access the {app_name} application using the application route:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc get route
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output: 
+      NAME        HOST/PORT                                                    PATH   SERVICES    PORT   TERMINATION     WILDCARD
+      ....
+      globex-ui   globex-ui-demo.apps.cluster-hpxfn-1.sandbox933.opentlc.com          globex-ui   http   edge/Redirect   Non
+----
+
+** Create the secret required to access the current namespace:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+cat secret-interconnect.yaml
+----
+
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    skupper.io/type: connection-token-request
+  name: secret-interconnect
+----
+
+** Create the secret:
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc apply -f secret-interconnect.yaml
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output: 
+      secret/secret-interconnect created
+----
+
+** Create the token required to access the current namespace. This token is linked to the secret created recently:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc get secret -o yaml secret-interconnect | yq 'del(.metadata.namespace)' > token.yaml
+----
+**Notes**: You can install **yq** using **brew install yq** or copy the secret content without the namespace into a new file called **token.yaml**.
+
+* On the main menu, select the option **Cool Stuff Store**
+
+image::coolstore-inventoryissue.png[width=80%]
+
+Note: You will notice that the inventory information is again not available.
+
+* Recreate the database component in a new namespace.
+** Create a new project to deploy the PostgreSQL database , *inventory-database*. Run the following command in the terminal:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc new-project inventory-database-%USERID%
+----
+
+* Explore the yaml file that will deploy the database.
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+cd $HOME/app-platform/content/modules/ROOT/files/module-02
+----
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+cat inventory-database.yaml
+----
+
+* Deploy the inventory database and backend service by running the following commands in the terminal:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc apply -f inventory-database.yaml
+----
+
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output: 
+      serviceaccount/inventory-app created
+      secret/inventory-database created
+      deployment.apps/inventory-database created
+      service/inventory-database create
+----
+* Create the token required to access the current namespace:
+
+** Explore the yaml file:
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+cat token.yaml
+----
+
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    ...
+  labels:
+    skupper.io/type: connection-token-request
+  name: secret-interconnect
+type: Opaque
+----
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc apply -f token.yaml
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output: 
+      secret/secret-interconnect created
+
+
+* Expose the database deployment will create a service to be accessible to the connected sites. 
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc annotate deployment/inventory-database skupper.io/proxy="http"
+----
+
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output: 
+      deployment.apps/inventory-database annotated
+----
 
 == More Information:
 

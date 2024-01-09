@@ -33,7 +33,7 @@ oc login -u %USERID% -p %PASSWORD%
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc new-project coolstore-dev-%USERID%
+oc new-project coolstore-dev-%USERID% https://api.cluster-cluster-ID.opentlc.com:6443 --insecure-skip-tls-verify=true
 ----
 
 * Explore the yaml file that will deploy the catalog and the database.
@@ -41,7 +41,7 @@ oc new-project coolstore-dev-%USERID%
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-cd $HOME/app-platform/content/modules/ROOT/examples/module-01
+cd $HOME/app-platform/content/modules/ROOT/files/module-01
 ----
 
 * Install the the coolstore components
@@ -165,11 +165,6 @@ image::coolstore_topology_usage.png[width=60%]
 image::coolstore_website.png[width=80%]
 
 
-
-
-
-
-
 == Update the title of the application
 As developers, we work on applications making new features, resolving bugs. In this opportunity, you will have the chance to resolve a bug that requires you to update the title of the application.
 
@@ -181,7 +176,6 @@ As developers, we work on applications making new features, resolving bugs. In t
 6. Click on the Source Control icon, Commit and Push your changes.
 
 image::devspaces.png[width=80%]
-
 
 
 == Conclusion
