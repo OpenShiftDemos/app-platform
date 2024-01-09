@@ -609,6 +609,21 @@ output:
       deployment.apps/inventory-database annotated
 ----
 
+* Verify that the application is fully functional with the inventory information:
+
+** Go to the OpenShift on AWS
+** Access the route 
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc get routes
+----
+
+image::coolstore_fullworking.png[width=80%]
+
+The inventory information is available now.
+
 == More Information:
 
 === Red Hat Edge
