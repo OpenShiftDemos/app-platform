@@ -474,6 +474,20 @@ output:
 
 ** Create the secret required to access the current namespace:
 
+** Execute the following command on your terminal:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+skupper init
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output: 
+      Skupper is now installed in namespace 'inventory-database-userN'.  Use 'skupper status' to get more information.
+----
+
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
@@ -492,6 +506,7 @@ metadata:
 ----
 
 ** Create the secret:
+
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
@@ -562,6 +577,7 @@ output:
 * Create the token required to access the current namespace:
 
 ** Explore the yaml file:
+
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
@@ -592,14 +608,14 @@ oc apply -f token.yaml
 ----
 output: 
       secret/secret-interconnect created
-
+----
 
 * Expose the database deployment will create a service to be accessible to the connected sites. 
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc annotate deployment/inventory-database skupper.io/proxy="http"
+oc annotate deployment/inventory-database skupper.io/proxy="http" "skupper.io/port=5432"
 ----
 
 [.console-output]
@@ -622,7 +638,7 @@ oc get routes
 
 image::coolstore_fullworking.png[width=80%]
 
-The inventory information is available now.
+The inventory information is now available.
 
 == More Information:
 
