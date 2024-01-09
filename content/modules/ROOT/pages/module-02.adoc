@@ -3,11 +3,17 @@
 
 The open hybrid cloud approach enables applications to run anywhere and connect easily using the same tools without compromising security and availability. Decentralized systems are needed now more than ever to reduce latency, improve user experience, resiliency, and reduce costs.
 
-https://www.redhat.com/en/technologies/cloud-computing/service-interconnect[Red Hat Service Interconnect^] allows connectivity between clusters, enabling developers to quickly and easily connect their applications without overhead. 
+https://www.redhat.com/en/technologies/cloud-computing/service-interconnect[Red Hat Service Interconnect^] allows connectivity between clusters, enabling developers to quickly and easily connect their applications without overhead. Red Hat Service Interconnect is based on (https://skupper.io/index.html[Skupper^])
 
 
 https://www.redhat.com/en/products/edge[Red Hat Edge^] It allows organizations to deploy workloads closer to the end user location, providing flexibility with a right-sized platform. Red Hat Device Edge has many flavors. You will work with the Single Node OpenShift (SNO).
 
+== Pre-reqs:
+
+** Install Red Hat Service InterconnectSI command line (skupper version 1.5.2):
+
+* https://github.com/skupperproject/skupper-example-hello-world#step-1-install-the-skupper-command-line-tool[Install Skupper^]
+* https://skupper.io/install/index.html[For Windows and other installation options^]
 
 == A retail use case
 In the following example, we will explore a retail use case. Diverse industries can implement this proposed architecture or similar when two services or systems running on different platforms need to connect.
@@ -29,14 +35,14 @@ In your Red Hat OpenShift running on AWS you will deploy the rest of the {app_na
 
 == Catalog on Central Hub - OpenShift on AWS
 
-Red Hat Service Interconnect operator is already installed.
+Red Hat Service Interconnect is available through the operator or command line. In This cluster, the operator is already installed.
 
 * Login in the OpenShift using the terminal:
 
 [.console-input]
 [source,bash]
 ----
-oc login -u %USERID% -p %PASSWORD% 
+oc login -u %USERID% -p %PASSWORD% https://api.cluster-cluster-ID.opentlc.com:6443 --insecure-skip-tls-verify=true
 ----
 
 * Create a new project to deploy the {app_name}. Run the following command in the terminal:
@@ -103,8 +109,6 @@ cat configmap_rhsi.yaml
 
 **Notes**: The ConfigMap will determine the features available for you. In this case, we enabled **console: "true"** to access the UI.
 
-* Deploy the inventory database and backend service by running the following commands in the terminal:
-
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
@@ -122,7 +126,7 @@ output:
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc get pods
+oc get pods -w
 ----
 [.console-output]
 [source,subs="+attributes,macros+"]
@@ -132,12 +136,12 @@ output:
       catalog-77b478948c-jxlqn                      1/1     Running   0             55s
       catalog-database-985996745-gmlnd              1/1     Running   0             55s
       globex-ui-79f448fd99-v8qzt                    1/1     Running   0             54s
-      order-placement-689c64c679-m6fm4              1/1     Running   1 (18s ago)   54s
+      order-placement-689c64c679-m6fm4              1/1     Running   0             54s
       skupper-prometheus-76f469b48d-k88sj           1/1     Running   0             32s
       skupper-router-7cfb8958f-gg2w2                2/2     Running   0             35s
       skupper-service-controller-5bf78d86c6-zjm5h   2/2     Running   0             33s 
 ----
-
+Note: Wait until all the pods are running, as shown above.
 
 * Create the secret required by Red Hat Service Interconnect to access the current namespace. This token is linked to the secret created recently:
 
@@ -156,8 +160,21 @@ output:
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-$ oc get secret -o yaml secret-interconnect | yq 'del(.metadata.namespace)' > token.yaml
+oc get secret -o yaml secret-interconnect | yq 'del(.metadata.namespace)' > token.yaml
 ----
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+skupper token create coolstore.token
+----
+
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
+----
+output: 
+      Token written to coolstore.token
+----      
 
 * From a web browser, access the {app_name} application using the application route:
 
@@ -191,7 +208,7 @@ The inventory information is missing but the {app_name} website is still visible
 [.console-input]
 [source,bash]
 ----
-oc login -u %USERID% -p %PASSWORD% 
+oc login -u %USERID% -p %PASSWORD% https://api.cluster-CLUSTER_ID.opentlc.com:6443 --insecure-skip-tls-verify=true
 ----
 
 * Create a new project to deploy the PostgreSQL database and service, *inventory*. Run the following command in the terminal:
@@ -244,14 +261,26 @@ This instance we do not need to have access to the UI.
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc apply -f configmap_rhsi_sno.yaml
+skupper init
 ----
-
 [.console-output]
 [source,subs="+attributes,macros+"]
 ----
-output:
-      configmap/skupper-site created
+output: 
+      Skupper is now installed in namespace 'inventory-userN'.  Use 'skupper status' to get more information.
+----
+** Verify the status:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+skupper status
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output: 
+      Skupper is enabled for namespace "inventory-userN". It is not connected to any other sites. It has no exposed services.
 ----
 
 * Verify that all pods are running:
@@ -273,17 +302,17 @@ output:
 ----
 
 * Create the token required by Red Hat Service Interconnect to access the {app_name}'s namespace. This token is linked to the secret created recently:
-
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc apply -f token.yaml
+skupper link create coolstore.token
 ----
 [.console-output]
 [source,subs="+attributes,macros+"]
 ----
 output: 
-      secret/secret-interconnect created
+      Site configured to link to ...
+      ...
 ----
 
 * Expose the deployment will create a service to be accessible to the connected sites. 
@@ -300,6 +329,7 @@ oc annotate deployment/inventory skupper.io/proxy="http"
 output: 
       deployment.apps/inventory annotated
 ----
+** Explore the new services created by skupper related to Skupper functionality and inventory services to connect pods with the service.
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -350,6 +380,7 @@ output:
 ...
 skupper                skupper-demo-service.apps.cluster-rqk9v.rqk9v.sandbox1343.opentlc.com                       skupper          metrics        reencrypt/Redirect     None
 ----
+* User: admin Pass: ocp123
 * Explore the different components
 
 ** **Topology**: Graphical representation of all the connections
