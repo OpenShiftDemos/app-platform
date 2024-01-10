@@ -24,7 +24,7 @@ This lab consists of 3 modules to enable you with hands-on to try solutions conn
 
 * Security and Automation in Software Delivery (30 mins)
 
-(TODO)
+This section will showcase how OpenShift Platform Plus (OPP) can be used to provide a comprehensive DevSecOps workflow, with a focus on Software Supply Chain Security throughout the entire process, from development to production. DevSecOps stands for Development, Security and Operations, and is a hollistic approach that promotes continous security within your DevOps practices.
 
 === Lab Access (TODO)
 
