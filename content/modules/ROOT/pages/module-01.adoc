@@ -24,7 +24,7 @@ In your Red Hat OpenShift running on AWS, you will deploy the rest of the {app_n
 [.console-input]
 [source,bash]
 ----
-oc login -u %USERID% -p %PASSWORD% 
+oc login -u %USERID% -p %PASSWORD% api.cluster-cluster-ID.opentlc.com:6443 --insecure-skip-tls-verify=true
 ----
 
 * Create a new project to deploy the {app_name}. Run the following command in the terminal:
@@ -32,7 +32,7 @@ oc login -u %USERID% -p %PASSWORD%
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc new-project coolstore-dev-%USERID% https://api.cluster-cluster-ID.opentlc.com:6443 --insecure-skip-tls-verify=true
+oc new-project coolstore-dev-%USERID% 
 ----
 
 * Explore the yaml file that will deploy the catalog and the database.
@@ -72,8 +72,6 @@ The Topology view in the Developer perspective of the web console provides a vis
 
 1. Access the Developer's Perspective
 2. Click on *Topology*
-3. Click on the object *web-nodejs-git*
-
 
 image::coolstore_topology.png[width=80%]
 
@@ -89,32 +87,31 @@ In this section, you will move the UI source code into OpenShift using the Devel
 
 1. Access Developer Perspective
 2. Click on  *+Add*
-3. Import from Git
+3. *Import from Git*
 4. Git Repo URL: https://github.com/OpenShiftDemos/web-nodejs.git
 5. Edit *Import Strategy* and select *Builder Image* (keep Node.js and Builder Image version: 16-ubi8)
-6. On Resources, select Serverless Deployment
-7. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
+6. On Resource Type, select *Serverless Deployment*
+7. Select the checkbox: *Pipelines*
+8. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
     - *name*: SECURE_COOLSTORE_GW_ENDPOINT
     - *value*: https://gateway-vertx-coolstore-dev-user<REPLACEME_USERID>.apps.cluster-<REPLACEME_CLUSTER_ID>.opentlc.com/
-
-8. Select the checkbox: *Pipelines*
 9. Click on *Create*
 
 https://docs.openshift.com/container-platform/latest/applications/creating_applications/odc-creating-applications-using-developer-perspective.html[For more information^]
 
-==== Review the topology:
+==== Verify build and deployment:
 
-1. Click on *Pipelines*
-2. Click on the pipelines -> Pipeline Runs -> Select the Running Pipeline.
+1. On the left menu, Click on *Pipelines*
+2. Click on the pipelines -> Select the Pipeline -> Pipeline Runs -> Select the Running Pipeline.
 3. Verify that the pipeline is running and that everything is green.
 
 **Notes**: The pipeline might take a few seconds to complete.
 
-image::pipeline_webui.png[width=80%]
+image::pipelines_serverless.png[width=80%]
 
 Once the Pipeline has finished, it will be shown as Pipeline Succeeded, and Pod will run.
 
-* Go back to the topology view: Click on Topology on the left menu.
+* Go back to the *Topology view*: Click on Topology on the left menu.
 
 image::coolstore_topology_web.png[width=80%]
 
@@ -127,6 +124,8 @@ There is a new deployment object with no pods running. The serverless deployment
 https://web-nodejs-git-coolstore-dev-%USERID%.apps.cluster-<>.opentlc.com
 
 image::coolstore_website_black.png[width=80%]
+
+* Verify the pod running
 
 * Explore the application logs by clicking on *View logs* on the Pod section.
 

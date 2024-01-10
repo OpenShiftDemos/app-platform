@@ -42,7 +42,7 @@ Red Hat Service Interconnect is available through the operator or command line. 
 [.console-input]
 [source,bash]
 ----
-oc login -u %USERID% -p %PASSWORD% https://api.cluster-cluster-ID.opentlc.com:6443 --insecure-skip-tls-verify=true
+oc login -u %USERID% -p %PASSWORD% api.cluster-cluster-ID.opentlc.com:6443 --insecure-skip-tls-verify=true
 ----
 
 * Create a new project to deploy the {app_name}. Run the following command in the terminal:
@@ -148,24 +148,6 @@ Note: Wait until all the pods are running, as shown above.
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc apply -f secret-interconnect.yaml
-----
-[.console-output]
-[source,subs="+attributes,macros+"]
-----
-output: 
-      secret/secret-interconnect created
-----
-
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
-oc get secret -o yaml secret-interconnect | yq 'del(.metadata.namespace)' > token.yaml
-----
-
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
 skupper token create coolstore.token
 ----
 
@@ -261,7 +243,7 @@ This instance we do not need to have access to the UI.
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-skupper init
+skupper init --site-name retail-lasvegas --ingress ClusterIP 
 ----
 [.console-output]
 [source,subs="+attributes,macros+"]
@@ -280,7 +262,7 @@ skupper status
 [source,subs="+attributes,macros+"]
 ----
 output: 
-      Skupper is enabled for namespace "inventory-userN". It is not connected to any other sites. It has no exposed services.
+      Skupper is enabled for namespace "inventory-userN" with the site name "retail-lasvegas". It is not connected to any other sites. It has no exposed services.
 ----
 
 * Verify that all pods are running:
@@ -479,7 +461,7 @@ output:
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-skupper init
+skupper init --site-name retail-database-lasvegas
 ----
 [.console-output]
 [source,subs="+attributes,macros+"]
