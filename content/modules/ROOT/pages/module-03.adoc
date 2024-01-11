@@ -21,6 +21,10 @@ image::/module3/application-architecture.png[width=80%]
 
 == The DevSecOps pipeline
 
+
+Login to the openshift console using user {openshift_cluster_admin_username} and password {openshift_cluster_admin_password} using this URL: https://{openshift_cluster_console_url}
+
+
 In this section, we will have a look at the end-to-end DevSecOps pipeline and explore the security gates that are provided in it.
 
 In the openshift console left menu, open the pipelines section then click on pipelines, as show in the screenshot below.
