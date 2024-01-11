@@ -1,5 +1,4 @@
-= Extend to the edge and interconnect (20 mins)
-:imagesdir: ../assets/images/module2
+= Extend to the edge and interconnect (30 mins)
 
 The open hybrid cloud approach enables applications to run anywhere and connect easily using the same tools without compromising security and availability. Decentralized systems are needed now more than ever to reduce latency, improve user experience, resiliency, and reduce costs.
 
@@ -13,7 +12,7 @@ In the following example, we will explore a retail use case. Diverse industries 
 
 A retail store wants to install an application closer to the end user location to gather inventory information from that particular location.
 
-image::edge_interconnect.png[width=80%]
+image::module2/edge_interconnect.png[width=80%]
 
 *Retail Store - Las Vegas*: This retail has a Single Node OpenShift (SNO) already setup.
 
@@ -197,7 +196,7 @@ output:
 
 * On the main menu, select the option **Cool Stuff Store**
 
-image::coolstore-inventoryissue.png[width=80%]
+image::module2/coolstore-inventoryissue.png[width=80%]
 
 
 **Notes**: 
@@ -348,7 +347,7 @@ output:
 oc get routes
 ----
 
-image::coolstore_fullworking.png[width=80%]
+image::module2/coolstore_fullworking.png[width=80%]
 
 The inventory information is available now.
 
@@ -375,19 +374,19 @@ skupper                skupper-demo-service.apps.cluster-rqk9v.rqk9v.sandbox1343
 
 Two sites were created: Hub and retail location.
 
-image::rhsi_sites.png[width=80%]
+image::module2/rhsi_sites.png[width=80%]
 
 
 ** **Addresses**: The exposed deployment is shown here and available to connect using the specific address.
 
-image::rhsi_addresses.png[width=80%]
+image::module2/rhsi_addresses.png[width=80%]
 
 *** Click on the service:
  - Throughput Bytes: Charts providing traffic related information
 
 The database will show receiving and sending traffic to the {app_name} site.
 
-image::rhsi_traffic.png[width=80%]
+image::module2/rhsi_traffic.png[width=80%]
 
 ** **Components**: Services that are exposed on the service network, both local and remote.
 
@@ -495,7 +494,7 @@ oc get secret -o yaml secret-interconnect-database | yq 'del(.metadata.namespace
 
 * On the main menu, select the option **Cool Stuff Store**
 
-image::coolstore-inventoryissue.png[width=80%]
+image::module2/coolstore-inventoryissue.png[width=80%]
 
 Note: You will notice that the inventory information is again not available.
 
@@ -621,13 +620,6 @@ output:
       deployment.apps/inventory-database annotated
 ----
 
-*** Click on the service:
- - Throughput Bytes: Charts providing traffic related information
-
-The database will show receiving and sending traffic to the {app_name} site.
-
-image::rhsi_traffic.png[width=80%]
-
 * Verify that the application is fully functional with the inventory information:
 
 ** Go to the OpenShift on AWS
@@ -638,7 +630,7 @@ image::rhsi_traffic.png[width=80%]
 oc get routes
 ----
 
-image::coolstore_fullworking.png[width=80%]
+image::module2/coolstore_fullworking.png[width=80%]
 
 The inventory information is now available.
 
@@ -664,17 +656,17 @@ oc delete pod inventory-f6957f6d5-7tggx
 
 A new site was created: Hub and retail location.
 
-image::rhsi_topologies_3.png[width=80%]
+image::module2/rhsi_topologies_3.png[width=80%]
 
 
 ** **Addresses**: The exposed deployment is shown here and available to connect using the specific address.
 
-image::rhsi_addresses_2.png[width=80%]
+image::module2/rhsi_addresses_2.png[width=80%]
 
 ** Click on the *Process tab* in the Topology view
 ** Select the checkbox *show metrics*
 
-image::rhsi_processes_withtraffic.png[width=80%]
+image::module2/rhsi_processes_withtraffic.png[width=80%]
 
 Note: if you don't see any traffic refresh the coolstore webpage again.
 
