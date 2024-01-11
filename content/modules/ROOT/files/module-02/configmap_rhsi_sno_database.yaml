@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: skupper-site
 data:
-  name: retail-lasvegas
+  name: retail-database-lasvegas
