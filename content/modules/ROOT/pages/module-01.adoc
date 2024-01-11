@@ -80,15 +80,30 @@ The Topology view in the Developer perspective of the web console provides a vis
 
 ==== Review the set of microservices that composed the Coolstore application
 
-** Access the Web Console using the same credentials.
+** Access the OpenShift Web Console 
 
+* Obtain the console URL:
 [source,sh,subs="attributes",role=execute]
 ----
 {openshift_console_url}
 ----
+* Copy the console URL in your web browser.
 
-1. Access the Developer's Perspective
-2. Click on *Topology*
+* Use your OpenShift credentials to login in the Web Console.
+[.console-input]
+[source,sh,subs="attributes",role=execute]
+----
+user: {user}  
+----
+
+[.console-input]
+[source,sh,subs="attributes",role=execute]
+----
+password: openshift_cluster_admin_password
+----
+ 
+
+** Click on *Topology* to access the Developer's Perspective
 
 image::module1/coolstore_topology.png[width=80%]
 
@@ -102,7 +117,7 @@ As you can see, everything is there except the UI and the catalog. In the next s
 
 In this section, you will move the UI source code into OpenShift using the Developer Perspective. OpenShift will create an automated ci/cd pipeline and all the manifests required by the application.
 
-* Copy the Gateway URL:
+* Copy the Gateway URL to be used in the next task:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -117,30 +132,33 @@ output:
 ----
 
 1. Access Developer Perspective
-2. Click on  *+Add*
+2. Click on *+Add*
 3. *Import from Git*
 4. Git Repo URL: https://github.com/OpenShiftDemos/web-nodejs.git
 5. Edit *Import Strategy* and select *Builder Image* (keep Node.js and Builder Image version: 16-ubi8)
 6. On Resource Type, select *Serverless Deployment*
 7. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
     - *name*: SECURE_COOLSTORE_GW_ENDPOINT
-    - *value*: Gateway's URL (Copy the URL from the topology view)
-9. Click on *Create*
-
-
+    - *value*: Gateway's URL (Paste the Gateway URL)
+8. Click on *Create*
 
 https://docs.openshift.com/container-platform/latest/applications/creating_applications/odc-creating-applications-using-developer-perspective.html[For more information^]
 
 ==== Verify build and deployment:
 
-1. Select the Serverless Service and On the left menu, Click on the *Resources* tab and *Builds*
-3. Verify that the build is running and no issues in the logs.
+1. Select the new Service.
+2. On the right menu, Click on the *Resources* tab
+
+image::module1/serverless_resources.png[width=80%]
+
+1. Click on the *View Logs*
+2. Verify that the build is running and that the logs have no issues.
 
 **Notes**: The build might take a few seconds to complete.
 
 image::module1/build_ok.png[width=80%]
 
-Once the Build has finished the Pod will run successfully.
+Once the Build has finished the application will run successfully.
 
 * Go back to the *Topology view*: Click on Topology on the left menu.
 
@@ -151,13 +169,13 @@ The serverless deployment will be triggered once build is done and when it recei
 ==== Verify the application is running as expected
 
  
-* Click on the Routes under Resources tab. Verify the appication is running:
+* Click on the *Routes* under the Resources tab. Verify that the application is running
 
 image::module1/coolstore_website_black.png[width=80%]
 
-* Verify the pod running
+* Verify the pod is running.
 
-* Explore the application logs by clicking on *View logs* on the Pod section.
+* Explore the application logs by clicking on *View logs* on the *Resources Tab* -> *Pod* section.
 
 image::module1/logs_webui.png[width=60%]
 
@@ -172,37 +190,67 @@ Red Hat OpenShift Pipelines is a cloud-native, continuous integration and contin
 
 1. Access Developer Perspective
 2. Click on  *+Add*
-3. Import from Git
+3. *Import from Git*
 4. Git Repo URL: https://github.com/coolstore-demo/catalog-spring-boot.git
-5. Edit *Import Strategy* and select *Builder Image* (keep Java and Builder Image version: openjdk-17-ubi8)
-6. Name: catalog-spring-boot 
+5. Edit *Import Strategy* and select *Builder Image* (keep Java and Builder Image version: *openjdk-17-ubi8*)
+6. On Resource Type, select *Deployment*
+7. Name: catalog-spring-boot 
 8. Select the checkbox: *Pipelines*
 9. Click on *Create*
 
 
 ==== Verify build and deployment:
 
-1. Select the Service revision on the topology 
-2. Click on *Pipeline Runs*
-3. Verify that the pipeline is running and that everything is green.
+* Select the Service revision on the topology 
+* Click on *Pipeline Runs*
+
+image::module1/pipelines_detail.png[width=80%]
+
+* Verify that the pipeline is running and that everything is green.
 
 **Notes**: The pipeline might take a few minutes to complete. Explore the Pipeline Run's logs.
 
 image::module1/pipelines_deployment.png[width=80%]
 
-Once the Pipeline has finished, it will be shown as Pipeline Succeeded, and Pod will run.
+Once the Pipeline has finished, it will be shown as Pipeline Succeeded, and Pod will run successfully.
 
+* Explore the Pipeline logs:
+
+** Click on the Logs tab and explore the logs generated by each Task.
+
+image::module1/pipeline_logs.png[width=60%]
 
 ==== Observe the application CPU usage
+In the Observe section of OpenShift Container Platform web console, you can access and manage monitoring features such as metrics, alerts, monitoring dashboards, and metrics targets. https://docs.openshift.com/container-platform/4.14/monitoring/monitoring-overview.html[More information^]
+
 * In the topology view, Click on *Topology* on the left menu.
 * Access the Observe tab.
 
 image::module1/coolstore_topology_usage.png[width=60%]
 
+* Click on *View Dashboard* to explore the application metrics:
+
+image::module1/view_dashboard.png[width=60%]
+
+** Explore:
+
+*** CPU usage
+
+*** Memory usage
+
+*** Bandwidth information
+
+*** Packet rate information
+
+image::module1/dashboard_metrics.png[width=80%]
+
+https://docs.openshift.com/container-platform/4.14/monitoring/reviewing-monitoring-dashboards.html[Reviewing monitoring dashboards^]
+
 ==== Verify the application is running as expected
 * Return to the topology view: Click *Topology* on the left menu.
-* Click on the deployment's arrow:
-* Verify that the application is running on your web browser
+* Click on the *Routes* under the Resources tab. Verify that the application is running.
+
+The catalog information is now available.
 
 image::module1/coolstore_website.png[width=80%]
 
