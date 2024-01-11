@@ -84,7 +84,7 @@ The Topology view in the Developer perspective of the web console provides a vis
 
 [source,sh,subs="attributes",role=execute]
 ----
-{web_console_url}
+{openshift_console_url}
 ----
 
 1. Access the Developer's Perspective
