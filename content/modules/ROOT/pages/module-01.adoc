@@ -1,14 +1,13 @@
-= Application Modernization and Developer Experience with cloud services (30 mins)
+= Application Modernization and Developer Experience(20 mins)
 :imagesdir: ../assets/images/module1
 
-In this module, you will explore the OpenShift Developer experience to understand developers' journey, daily activities, and how the OpenShift Application Platform brings developer productivity by reducing complexity and overhead from operations.
+In this module, you will explore the OpenShift Developer experience to understand developers' journey when building new applications and how the OpenShift Application Platform brings developer productivity by reducing complexity and overhead from operations.
 
 == Introduction
 
 In this lab, you will move an application to OpenShift using the Developer Perspective. That's all.  Using the Developer Perspective allows developers to move their applications quickly with a click of a button. 
 
 In your Red Hat OpenShift running on AWS, you will deploy the rest of the {app_name}. OpenShift already has installed OpenShift Serverless and https://docs.openshift.com/pipelines/1.13/install_config/installing-pipelines.html#op-installing-pipelines-operator-in-web-console_installing-pipelines[OpenShift Pipelines Operators^].
-
 
 == Application Overview
 
@@ -19,6 +18,9 @@ In your Red Hat OpenShift running on AWS, you will deploy the rest of the {app_n
 
 == Building your first Serverless application with the OpenShift Application Platform
 === Create your project
+
+The serverless cloud computing model provides developers with a modern, cloud-native app dev stack for hybrid clouds. Serverless lets developers focus on their code without worrying about the infrastructure. Red Hat® OpenShift® Serverless allows you to avoid being locked into a single vendor and enables a multicloud approach. https://www.redhat.com/en/technologies/cloud-computing/openshift/serverless[More information^]
+
 * Log in the OpenShift using the terminal:
 
 [source,sh,subs="attributes",role=execute]
@@ -37,9 +39,9 @@ oc new-project coolstore-dev-{user}
 * Clone the project to access the files.
 
 [.console-input]
-[source,bash,subs="+attributes,macros+"]
+[source,bash,subs="attributes+,+macros"]
 ----
-git clone https://github.com/OpenShiftDemos/app-platform.git
+git clone https://github.com/OpenShiftDemos/app-platform.git ~/app-platform
 ----
 
 * Explore the yaml file that will deploy the catalog and the database.
@@ -47,7 +49,7 @@ git clone https://github.com/OpenShiftDemos/app-platform.git
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-cd $HOME/app-platform/content/modules/ROOT/files/module-01
+cd ~/app-platform/content/modules/ROOT/files/module-01
 ----
 
 * Install the the Coolstore components:
@@ -98,8 +100,7 @@ In this section, you will move the UI source code into OpenShift using the Devel
 4. Git Repo URL: https://github.com/OpenShiftDemos/web-nodejs.git
 5. Edit *Import Strategy* and select *Builder Image* (keep Node.js and Builder Image version: 16-ubi8)
 6. On Resource Type, select *Serverless Deployment*
-7. Select the checkbox: *Pipelines*
-8. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
+7. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
     - *name*: SECURE_COOLSTORE_GW_ENDPOINT
     - *value*: https://gateway-vertx-coolstore-dev-user<REPLACEME_USERID>.apps.cluster-<REPLACEME_CLUSTER_ID>.opentlc.com/
 9. Click on *Create*
@@ -108,15 +109,14 @@ https://docs.openshift.com/container-platform/latest/applications/creating_appli
 
 ==== Verify build and deployment:
 
-1. On the left menu, Click on *Pipelines*
-2. Click on the pipelines -> Select the Pipeline -> Pipeline Runs -> Select the Running Pipeline.
-3. Verify that the pipeline is running and that everything is green.
+1. Select the Serverless Service and On the left menu, Click on the *Resources* tab and *Builds*
+3. Verify that the build is running and no issues in the logs.
 
-**Notes**: The pipeline might take a few seconds to complete.
+**Notes**: The build might take a few seconds to complete.
 
-image::module1/pipelines_serverless.png[width=80%]
+image::module1/build_ok.png[width=80%]
 
-Once the Pipeline has finished, it will be shown as Pipeline Succeeded, and Pod will run.
+Once the Build has finished the Pod will run successfully.
 
 * Go back to the *Topology view*: Click on Topology on the left menu.
 
@@ -127,8 +127,7 @@ There is a new deployment object with no pods running. The serverless deployment
 ==== Verify the application is running as expected
 
  
-* Verify that the application is running on your web browser with the URL:   
-https://web-nodejs-git-coolstore-dev-%USERID%.apps.cluster-<>.opentlc.com
+* Click on the Routes under Resources tab. Verify the appication is running:
 
 image::module1/coolstore_website_black.png[width=80%]
 
@@ -142,8 +141,10 @@ image::module1/logs_webui.png[width=60%]
 
 *Congratulations* you build and deploy a new application into OpenShift in just a few clicks!
 
-== Building your first backend application using the OpenShift Application Platform
+== Building your first backend application using the OpenShift Application Platform with OpenShift Pipelines
 In this section, you will move the catalog Java Spring Boot application into OpenShift using the Developer Perspective. OpenShift will create an automated ci/cd pipeline and all the manifests required by the application.
+
+Red Hat OpenShift Pipelines is a cloud-native, continuous integration and continuous delivery (CI/CD) solution based on Kubernetes resources. It uses Tekton building blocks to automate deployments across multiple platforms by abstracting away the underlying implementation details. Tekton introduces a number of standard custom resource definitions (CRDs) for defining CI/CD pipelines that are portable across Kubernetes distributions. https://access.redhat.com/documentation/en-us/openshift_container_platform/4.14/html/cicd/pipelines[More information^]
 
 1. Access Developer Perspective
 2. Click on  *+Add*
@@ -153,6 +154,19 @@ In this section, you will move the catalog Java Spring Boot application into Ope
 6. Name: catalog-spring-boot 
 8. Select the checkbox: *Pipelines*
 9. Click on *Create*
+
+
+==== Verify build and deployment:
+
+1. Select the Service revision on the topology 
+2. Click on *Pipeline Runs*
+3. Verify that the pipeline is running and that everything is green.
+
+**Notes**: The pipeline might take a few minutes to complete. Explore the Pipeline Run's logs.
+
+image::module1/pipelines_deployment.png[width=80%]
+
+Once the Pipeline has finished, it will be shown as Pipeline Succeeded, and Pod will run.
 
 
 ==== Observe the application CPU usage
@@ -171,6 +185,9 @@ image::module1/coolstore_website.png[width=80%]
 
 == Conclusion
 
+As a Developer, you can create, build, and manage applications using the Developer Perspective or the command line. The Developer perspective is a powerful tool that enables you to move applications from a Git repository, helm chart, jar file, and much more. 
+*Serverless* allows the deployment of applications without the burden of operations. The application's pods will be created depending on how much traffic is received. Serverless is a way to save costs since the applications will only run when receiving traffic. 
+*OpenShift Pipelines* allows teams to build and deploy applications via ci/cd. Pipelines can be autogenerated when selecting the Pipelines checkbox.
 
 == More Information:
 
@@ -178,3 +195,7 @@ image::module1/coolstore_website.png[width=80%]
 * https://docs.openshift.com/container-platform/latest/applications/odc-viewing-application-composition-using-topology-view.html[Viewing application composition using the Topology view^]
 
 * https://docs.openshift.com/pipelines/1.13/create/working-with-pipelines-web-console.html[Working with Red Hat OpenShift Pipelines in the web console^]
+
+* https://access.redhat.com/documentation/en-us/openshift_container_platform/4.14/html/cicd/pipelines[Pipelines^]
+
+*https://access.redhat.com/documentation/en-us/openshift_container_platform/4.14/html/cicd/builds[Builds^]
