@@ -80,6 +80,13 @@ The Topology view in the Developer perspective of the web console provides a vis
 
 ==== Review the set of microservices that composed the Coolstore application
 
+** Access the Web Console using the same credentials.
+
+[source,sh,subs="attributes",role=execute]
+----
+{web_console_url}
+----
+
 1. Access the Developer's Perspective
 2. Click on *Topology*
 
@@ -95,6 +102,20 @@ As you can see, everything is there except the UI and the catalog. In the next s
 
 In this section, you will move the UI source code into OpenShift using the Developer Perspective. OpenShift will create an automated ci/cd pipeline and all the manifests required by the application.
 
+* Copy the Gateway URL:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc get routes
+----
+[.console-output]
+[source,subs="+attributes,macros+"]
+----
+output:
+    gateway-vertx-coolstore-dev-user2.apps.cluster-kbzn7.kbzn7.sandbox3018.opentlc.com
+----
+
 1. Access Developer Perspective
 2. Click on  *+Add*
 3. *Import from Git*
@@ -103,8 +124,10 @@ In this section, you will move the UI source code into OpenShift using the Devel
 6. On Resource Type, select *Serverless Deployment*
 7. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
     - *name*: SECURE_COOLSTORE_GW_ENDPOINT
-    - *value*: Gateway's url (Copy the URL from the topology view)
+    - *value*: Gateway's URL (Copy the URL from the topology view)
 9. Click on *Create*
+
+
 
 https://docs.openshift.com/container-platform/latest/applications/creating_applications/odc-creating-applications-using-developer-perspective.html[For more information^]
 
