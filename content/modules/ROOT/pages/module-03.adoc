@@ -1,5 +1,4 @@
 = DevSecOps with OpenShift Platform Plus (30 mins)
-:imagesdir: ../assets/images/module3
 
 == Introduction
 
@@ -18,7 +17,7 @@ In this lab, we will be showcasing a three-layer architecture with three logical
 
 * The third site is the Secured Production (Prod) site, which is where applications will be securely deployed and monitored. This is the final destination for the applications that pass through the development pipeline and security checks. In this site, we will demonstrate advanced security monitoring and alerting, as well as how to securely manage and deploy applications across multiple clusters.
 
-image:application-architecture.png[width=80%]
+image::/module3/application-architecture.png[width=80%]
 
 == The DevSecOps pipeline
 
@@ -26,21 +25,21 @@ In this section, we will have a look at the end-to-end DevSecOps pipeline and ex
 
 In the openshift console left menu, open the pipelines section then click on pipelines, as show in the screenshot below.
 
-image:pipelines-view.png[width=80%]
+image::/module3/pipelines-view.png[width=80%]
 
 In the filter section on the right panel, enter 'app-globex'. You should see two pipelines, as seen below
 
-image:pipelines-filtered.png[width=100%]
+image::/module3/pipelines-filtered.png[width=100%]
 
 Let's look why the first pipeline has failed. In the second column named "Last run", click on the pipeline with the failed status. This should take you to the detailed view of the last run, as shown below:
 
-image:failed-pipeline.png[]
+image::/module3/failed-pipeline.png[]
 
 The "Log Snippet" section on the bottom-right side shows a quick overview of the reasons why the pipeline has failed. Let's explore more details.
 
 * Click on the failed task named "acs-image-check" hightlighted in red in the pipeline diagram.
 
-image:details-failed-status.png[]
+image::/module3/details-failed-status.png[]
 
 We can now see that 2 security policies have failed:
 
@@ -58,23 +57,23 @@ Now let's have a more detailed look at those policies directly in Red Hat ACS.
 
 * Once you are on the ACS console, select "Platform Configuration -> Policy Management" from the left-side menu. This should take you to the policies page.
 
-image:acs-policies.png[]
+image::/module3/acs-policies.png[]
 
 ACS provides about 85 out-of-the-box policies to help implement security best practices and sageguards across your fleets of clusters, you can explore some of them by scrolling through the list of policies.
 
 * Let's now look at the "Trusted Image Signature" policy that was triggered in the pipeline previously. In the "Filter policies" section, type "Policy" then hit enter, then type "Trusted Signature".
 
-image:acs-trusted-signature-policy.png[]
+image::/module3/acs-trusted-signature-policy.png[]
 
 * Click on the policy to check its details, then select "Actions -> Edit Policy" on the top right side.
 
-image:acs-edit-policy.png[]
+image::/module3/acs-edit-policy.png[]
 
 On the "Policy Details", you can define the metadata and the Severity level and some other information. 
 
 Next, select the "Policy Behavior" and this is where you can define when and how the policy gets applied.
 
-image:acs-policy-details.png[]
+image::/module3/acs-policy-details.png[]
 
 The "Lifecycle stages" allow you to define if it's applied at Build, Deploy or Runtime.
 
@@ -87,25 +86,25 @@ Finally, the "Configure enforcement behavior" gives you control over how the pol
 
 * Next, click on "3-Policy criteria" to explore how the signature verification is implemented. Inside the "Policy Section 1", click on "Select".
 
-image:acs-policy-criteria.png[]
+image::/module3/acs-policy-criteria.png[]
 
 * In the pop-up, click on "cosign", and this will take you to the public signature that is used to verify the container image, in pair with the private signature that is used by OpenShift Pipelines / Tekton Chains to sign the container images after the build. We will talk about the image signing process in more details in the next pipeline.
 
-image:acs-signature-integration.png[]
+image::/module3/acs-signature-integration.png[]
 
 Let's now see how Red Hat ACS allows you to monitor your cluster security, by inspecting image vulnerabilities.
 
 * On the left-side menu, click on "Vulnerability Management -> Dashboard", then select images on the top-right side
 
-image:acs-vuln-management.png[]
+image::/module3/acs-vuln-management.png[]
 
 * On the filter section, type "Image" then hit enter, then type "globex-ui:main", and select the one with an "active" image status
 
-image:acs-image-cves.png[]
+image::/module3/acs-image-cves.png[]
 
 This will take you to the image details, where you see a listing of all CVEs, all components, and all the deployments that are using this image on the right side panel. This helps you mitigate issues when there's a compromised image for example.
 
-image:acs-image-details.png[]
+image::/module3/acs-image-details.png[]
 
 That's it! You now have a better understanding of how Red Hat ACS allows you to define security policies that can in turn be used within the DevSecOps pipeline as security gates to prevent untrusted / undesirable content from getting into your production environments, and also continuous monitor the security of your multiple clusters and applications across all environments.
 
@@ -116,17 +115,17 @@ Now that we are familiar with how the previous pipeline was integrated with Red 
 
 * Go back to the OpenShift Console, and from the left side menu, select Pipelines -> Pipelines. In the right-side window, select the "PipelineRuns" tab and click on the pipelineRun with a "Succeeded" status.
 
-image:advanced-devsecops-pipelinerun.png[]
+image::/module3/advanced-devsecops-pipelinerun.png[]
 
 This will take you to a diagram with the last pipeline execution. Let's now examine the different steps, and focus on the tasks that provide an extra layer of security.
 
-image:advanced-pipeline-steps-1.png[]
+image::/module3/advanced-pipeline-steps-1.png[]
 
 In the early stages of the pipeline, we do a traditional source clone, then we verify the code using SonarQube and verify the source code commits, to make sure the code is legitimate.
 
 Now, in the next stages, this is where we have implemented additional security layers that will be detailed below.
 
-image:advanced-pipeline-steps-2.png[]
+image::/module3/advanced-pipeline-steps-2.png[]
 
 * *"Build-sign-image"* (group task labeled "1"):
 
@@ -164,13 +163,13 @@ Let's now have a look at container image in Quay, and verify that it has indeed 
 
 * Open the Quay URL and login as user "quayadmin" with the password provided in the lab instructions. Next, click the *"quayadmin/globex-ui"* repository, and click on 'Tags' on the left side menu
 
-image:quay-tags.png[]
+image::/module3/quay-tags.png[]
 
 We can now see all the history of that container image, with all tags, and the associated metadata. We can particularily see that this container image has a small checkmark next to it, hover it to check that it has been correctly signed by Tekton Chains with the DevSecOps pipeline was last run. 
 
 You can also click on the *"Show signatures"* button on the top-right side to reveal additional information about the image.
 
-image:quay-image-signed.png[]
+image::/module3/quay-image-signed.png[]
 
 Quay also provides a summary of the vulnerabilitie of the container image, but since we've already seen that with Red Hat ACS, let's skip to the next section.
 
@@ -184,7 +183,7 @@ Let's explore this step in the pipeline, then have a look at argocd to understan
 
 * On the OpenShift console, on the left menu, Select Pipelines -> Pipelines, and select the pipelineRun with the "Succeeded" status (the same one as in the previous section).
 
-image:gitops-update-manifest.png[]
+image::/module3/gitops-update-manifest.png[]
 
 * *update-dev-manifest*: This task is responsible for updating the manifests in the git repository, by updating the container image reference in the deployment yaml file, using Kustomize. This is a standard approach when using tools like OpenShift GitOps (based on argocd). Let's have a look at the yaml file in Gitea.
 
@@ -192,11 +191,11 @@ image:gitops-update-manifest.png[]
 
 * Click on the last commit id, as shown in the screenshot below:
 
-image:gitea-commit-id.png[]
+image::/module3/gitea-commit-id.png[]
 
 * Take a look at the changes about the container image tag, as seen below. Because OpenShift GitOps is constantly monitoring that GitOps repository, any update to the yaml file triggers a reconciliation with the target DEV cluster, meaning the application gets redeployed.
 
-image:gitea-updated-manifest.png[]
+image::/module3/gitea-updated-manifest.png[]
 
 Let's now switch to OpenShift GitOps to see how the application gets deployed in the DEV cluster using argocd.
 
@@ -204,11 +203,11 @@ Let's now switch to OpenShift GitOps to see how the application gets deployed in
 
 * OpenShift GitOps uses a concept of an *"Application"* as a group of manifests stored in a git repository that need to be deployed altogether. Select the "Globex" application in the main page to access the details.
 
-image:gitops-application-globex.png[]
+image::/module3/gitops-application-globex.png[]
 
 * On the top-left side, click on *"App details"* to access the information about the application, such as the git repository, the branch where the files are located, the target cluster and namespace where the application is deployed, etc.
 
-image:gitops-app-details-more.png[]
+image::/module3/gitops-app-details-more.png[]
 
 * Close the application details window, and explore the application page to see all the kubernetes resources that are deployed by OpenShift GitOps to the target cluster / namespace, such as the deployments, the services, etc.
 
@@ -216,7 +215,7 @@ That's it, you now have a better understanding of how the DevSecOps pipeline is 
 
 At the end of the pipeline, the same logic that we've seen for the DEV cluster is applied to the PRODUCTION cluster, with a dedicated OpenShift GitOps running on the production cluster to handle the deployments. The slight addition is that a pull request is created in the git repository to serve as an approval gate before the deployment is accepted into the production environment, as shown in the pipeline below.
 
-image:gitops-pull-request.png[]
+image::/module3/gitops-pull-request.png[]
 
 == Summary
 
