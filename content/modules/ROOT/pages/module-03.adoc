@@ -37,7 +37,7 @@ image::/module3/pipelines.png[width=80%]
 
 image::/module3/pipelineruns.png[width=100%]
 
-Let's look why the first pipeline has failed. In the second column named "Last run", click on the pipeline with the failed status. This should take you to the detailed view of the last run, as shown below:
+Let's look why the first pipeline has failed. Click on the pipeline with the failed status. This should take you to the detailed view of the last execution, as shown below:
 
 image::/module3/pipelinerun-error.png[]
 
