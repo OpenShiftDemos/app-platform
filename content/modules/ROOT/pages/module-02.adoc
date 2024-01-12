@@ -185,7 +185,7 @@ vi token.yaml
 ----
 
 * press *i* to edit the file
-* remove the namespace from the file:
+* remove the *namespace* line from the file:
   labels:
     skupper.io/type: connection-token
   name: secret-interconnect
@@ -216,7 +216,7 @@ output:
 
 image::module2/coolstore-inventoryissue.png[width=80%]
 
-* Before leaving the cluster. Copy the RHSI URL and paste in your web browser.
+* Before leaving the cluster. Copy the RHSI URL and paste in your web browser. You will need it in the next section.
 
 For example: https://skupper-coolstore-user2.apps.cluster-kbzn7.kbzn7.sandbox3018.opentlc.com/
 
@@ -426,7 +426,8 @@ output:
 ----
 
 ** From a web browser, access the {app_name} application using the application route:
-***Note: Verify all related pods are terminated.
+
+*Note*: Verify all related pods are terminated.
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -509,7 +510,7 @@ vi token-database.yaml
 ----
 
 * press *i* to edit the file
-* remove the namespace from the file:
+* remove the *namespace* line from the file:
   labels:
     skupper.io/type: connection-token
   name: secret-interconnect-database
@@ -648,20 +649,14 @@ output:
 
 * Verify that the application is fully functional with the inventory information:
 
-** Go to the OpenShift on AWS
-** Access the route 
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
-oc get routes
-----
+* Refresh the coolstore web page.
 
 image::module2/coolstore_fullworking.png[width=80%]
 
 The inventory information is now available.
 
 
-*Note: If you don't see the inventory information yet. Review the inventory logs and restart the pod.
+*Note*: If you don't see the inventory information yet. Review the inventory logs and restart the pod.
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -704,7 +699,7 @@ image::module2/rhsi_addresses_2.png[width=80%]
 
 image::module2/rhsi_processes_withtraffic.png[width=80%]
 
-Note: if you don't see any traffic refresh the coolstore webpage again.
+*Note*: if you don't see any traffic refresh the coolstore webpage again.
 
 == Conclusion
 
