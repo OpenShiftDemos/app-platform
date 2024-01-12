@@ -4,11 +4,10 @@
 
 **Welcome to our workshop!**
 
-This lab will give attendees a comprehensive understanding of OpenShift as an application platform that can accelerate their day-to-day activities, from development to adopting DevSecOps and GitOps approaches to running applications from development to production environments in hybrid cloud and at the edge.
+This lab will give attendees a comprehensive understanding of OpenShift as an application platform that can accelerate their day-to-day activities, from modernization to adopting DevSecOps combined with a GitOps approach to running applications in hybrid cloud environments to the edge.
 
-The lab will cover the entire lifecycle of an application, from importing existing services to developing new capabilities, putting in place DevSecOps pipelines to promote the application through multiple environments, and, finally, scaling, monitoring, and managing the application in production environments for a complete feedback loop with continuous security.
 
-After completing the lab, you should feel comfortable speaking with customer application and developer teams about the benefits of using OpenShift as the application platform they need to build, deploy, manage, and scale their applications.
+After completing the lab, you should feel comfortable speaking with customer application and developer teams about the benefits of using OpenShift as the application platform they need to build, deploy, manage, and auto-scale their applications with serverless.
 
 == 2. Modules Overview
 
@@ -16,20 +15,15 @@ This lab consists of 3 modules to enable you with hands-on to try solutions conn
 
 * Developer Experience & Application Modernization (30 mins)
 
-** Explore developer experience to understand developers' journeys, daily activities, and how the OpenShift Application Platform brings developer productivity by reducing complexity and overhead from operations. 
+** Explore developer experience to understand developers' journeys to modernize and build applications. This module will show how the OpenShift Application Platform brings developer productivity by reducing complexity and overhead from operations. 
 
 * Extend to the edge and interconnect (20 mins)
 
-** Extend Red Hat to the Edge to run workloads anywhere and connect easily with Red Hat Service Interconnect.
+** Extend Red Hat to the Edge to run workloads anywhere and connect easily with Red Hat Service Interconnect in hybrid cloud environments and at the edge.
 
 * Security and Automation in Software Delivery (30 mins)
 
-This section will showcase how OpenShift Platform Plus (OPP) can be used to provide a comprehensive DevSecOps workflow, with a focus on Software Supply Chain Security throughout the entire process, from development to production. DevSecOps stands for Development, Security and Operations, and is a hollistic approach that promotes continous security within your DevOps practices.
-
-=== Lab Access
-
-The terminal window to your right is *already* logged into the lab environment as the `{ssh_user}` user via `ssh`. 
-All steps of this lab are to be completed as the `{ssh_user}` user.
+This section will showcase how OpenShift Platform Plus (OPP) can provide a comprehensive DevSecOps workflow, focusing on Software Supply Chain Security throughout the entire process, from development to production. DevSecOps stands for Development, Security, and Operations and is a holistic approach that promotes continuous security within your DevOps practices.
 
 
 

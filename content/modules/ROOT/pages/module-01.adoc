@@ -5,7 +5,7 @@ In this module, you will explore the OpenShift Developer experience to understan
 
 == Introduction
 
-In this lab, you will move an application to OpenShift using the Developer Perspective. That's all.  Using the Developer Perspective allows developers to move their applications quickly with a click of a button. 
+In this lab, you will move two applications to OpenShift using the Developer Perspective. Using the Developer Perspective allows developers to move their applications quickly with a click of a button. 
 
 In your Red Hat OpenShift running on AWS, you will deploy the rest of the {app_name}. OpenShift already has installed OpenShift Serverless and https://docs.openshift.com/pipelines/1.13/install_config/installing-pipelines.html#op-installing-pipelines-operator-in-web-console_installing-pipelines[OpenShift Pipelines Operators^].
 
