@@ -219,7 +219,7 @@ https://github.com/OpenShiftDemos/catalog-spring-boot.git
 5. Edit *Import Strategy* and select *Builder Image* (keep Java and Builder Image version: *openjdk-17-ubi8*)
 6. Name: *catalog-spring-boot*
 7. On Resource Type, select *Deployment*
-8. Select the checkbox: *Pipelines*
+8. Select the checkbox: *Add Pipelines*
 
 Verify your input data is the same as shown below:
 
