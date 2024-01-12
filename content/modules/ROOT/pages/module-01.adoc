@@ -201,7 +201,7 @@ Red Hat OpenShift Pipelines is a cloud-native, continuous integration and contin
 1. Access Developer Perspective
 2. Click on  *+Add*
 3. *Import from Git*
-4. Git Repo URL: https://github.com/coolstore-demo/catalog-spring-boot.git
+4. Git Repo URL: https://github.com/OpenShiftDemos/catalog-spring-boot.git
 5. Edit *Import Strategy* and select *Builder Image* (keep Java and Builder Image version: *openjdk-17-ubi8*)
 6. Name: *catalog-spring-boot* 
 7. On Resource Type, select *Deployment*
