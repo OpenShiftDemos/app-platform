@@ -173,9 +173,27 @@ output:
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc get secret -o yaml secret-interconnect | yq 'del(.metadata.namespace)' > token.yaml
+oc get secret -o yaml secret-interconnect > token.yaml
 ----
-**Notes**: You can install **yq** using **brew install yq** or copy the secret content without the namespace into a new file called **token.yaml**.    
+
+* Edit the yaml file to remove the namespace:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+vi token.yaml
+----
+
+* press *i* to edit the file
+* remove the namespace from the file:
+  labels:
+    skupper.io/type: connection-token
+  name: secret-interconnect
+  resourceVersion: "440300"
+  uid: df3ec97e-de2d-4e7c-9099-21aa99858f92
+type: Opaque
+
+* Save the file by pressing ESC + :wq! + ENTER
 
 * From a web browser, access the {app_name} application using the application route:
 
@@ -192,8 +210,8 @@ output:
       ....
       globex-ui   globex-ui-demo.apps.cluster-hpxfn-1.sandbox933.opentlc.com          globex-ui   http   edge/Redirect   Non
 ----
-
-* On the main menu, select the option **Cool Stuff Store**
+* Copy the globex-ui URL in your web browser.
+* On the main menu, select the tab **Cool Stuff Store**
 
 image::module2/coolstore-inventoryissue.png[width=80%]
 
@@ -221,12 +239,6 @@ oc new-project inventory-{user}
 ----
 
 * Explore the yaml file that will deploy the database.
-
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
-cd $HOME/app-platform/content/modules/ROOT/files/module-02
-----
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -286,7 +298,7 @@ output:
       skupper-router-7b787c887f-pwclh               2/2     Running   0          9s
       skupper-service-controller-7f6fb474ff-t4zkl   1/2     Running   0          7s
 ----
-
+* Wait until all the pods are running.
 * Create the token required by Red Hat Service Interconnect to access the {app_name}'s namespace. This token is linked to the secret created recently:
 
 [.console-input]
@@ -487,9 +499,26 @@ output:
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc get secret -o yaml secret-interconnect-database | yq 'del(.metadata.namespace)' > token-database.yaml
+oc get secret -o yaml secret-interconnect-database > token-database.yaml
 ----
-**Notes**: You can install **yq** using **brew install yq** or copy the secret content without the namespace into a new file called **token.yaml**.
+
+* Edit the yaml file to remove the namespace:
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+vi token-database.yaml
+----
+
+* press *i* to edit the file
+* remove the namespace from the file:
+  labels:
+    skupper.io/type: connection-token
+  name: secret-interconnect-database
+  resourceVersion: "386275"
+  uid: 547c1b17-faf8-4fc8-9a58-26d4faa531ec
+type: Opaque
+
 
 * On the main menu, select the option **Cool Stuff Store**
 
@@ -567,7 +596,7 @@ output:
       skupper-router-85fc9b4c5c-k8rvk               2/2     Running   0          55s
       skupper-service-controller-6c498884bf-tg7gv   1/1     Running   0          54s
 ----
-
+* Wait until all the pods are running.
 * Create the token required to access the current namespace:
 
 ** Explore the yaml file:
@@ -635,6 +664,16 @@ The inventory information is now available.
 
 
 *Note: If you don't see the inventory information yet. Review the inventory logs and restart the pod.
+
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+oc get pods
+----
+
+* Use the inventory-database pod's name for the 
+following commands. For example:
+
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
