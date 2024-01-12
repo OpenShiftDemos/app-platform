@@ -270,7 +270,7 @@ output:
       service/inventory-database created
 ----
 
-* RHSI is installed as an Operator. You will be creating an instance of the Operator using a ConfigMap.
+* Red Hat Service Interconnect is installed as an Operator. You will be creating an instance of the Operator using a ConfigMap.
 
 ** Execute the following command on your terminal:
 
@@ -707,5 +707,5 @@ The bonus point module shows how Red Hat Service Interconnect can be available w
 
 === Red Hat Service Interconnect
 * https://github.com/skupperproject[Interconnect: More use cases and examples^]
-* https://skupper.io/docs/declarative/index.html[RHSI Declarative approach^] 
+* https://skupper.io/docs/declarative/index.html[Skupper Declarative approach^] 
 * https://skupper.io/start/index.html[Skupper command line^] 
