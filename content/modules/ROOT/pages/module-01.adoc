@@ -92,18 +92,9 @@ The Topology view in the Developer perspective of the web console provides a vis
 
 * Use your OpenShift credentials to login in the Web Console.
 
-[.console-input]
-[source,sh,subs="attributes",role=execute]
-----
-user: {user}  
-----
+* user: {user}  
 
-[.console-input]
-[source,sh,subs="attributes",role=execute]
-----
-password: {openshift_cluster_admin_password}
-----
- 
+* password: {password} 
 
 ** Click on *Topology* to access the Developer's Perspective
 
@@ -140,8 +131,14 @@ output:
 5. Edit *Import Strategy* and select *Builder Image* (keep Node.js and Builder Image version: 16-ubi8)
 6. On Resource Type, select *Serverless Deployment*
 7. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
+
+Copy the gateway URL from the route, include https and / at the end. For example:
+https://gateway-vertx-coolstore-dev-user2-test3.apps.cluster-kbzn7.kbzn7.sandbox3018.opentlc.com/
+Ensure the URL is working before pasting it.
+
     - *name*: SECURE_COOLSTORE_GW_ENDPOINT
-    - *value*: Gateway's URL (Paste the Gateway URL)
+    - *value*: https://Gateway_URL/
+
 
 
 Verify your input data is the same as shown below:
@@ -154,7 +151,7 @@ https://docs.openshift.com/container-platform/latest/applications/creating_appli
 
 ==== Verify build and deployment:
 
-1. Select the new Service by clicking on * No Revision*
+1. Select the new Service by clicking on *No Revision*
 2. On the right menu, Click on the *Resources* tab
 
 image::module1/serverless_resources.png[width=80%]
@@ -163,7 +160,7 @@ image::module1/serverless_resources.png[width=80%]
 
 * Verify the build process:
 
-1. Click on the *View Logs* on the *Build* section
+1. Click on the *View Logs* on the *Builds* section
 2. Verify that the build is running and that the logs have no issues. The log will show *Push successful* in the last line once has finished. 
 
 **Notes**: The build might take a few seconds to complete.
@@ -187,7 +184,9 @@ image::module1/coolstore_website_black.png[width=80%]
 
 **Notes**: As you can see, no catalog is available. We need to install the catalog application to access the catalog data.
 
-* Explore the application logs by clicking on *View logs* on the *Resources Tab* -> *Pod* section.
+* Go back to the *Topology view* in the Web Console.
+
+* Explore the application logs by clicking on *View logs* on the *Resources Tab* -> *Pods* section.
 
 image::module1/logs_webui.png[width=60%]
 
@@ -216,7 +215,7 @@ image::module1/deployment.png[width=80%]
 
 ==== Verify build and deployment:
 
-* Click the new Deployment on the Topology view 
+* Click the new Deployment *catalog-spring-boot* on the Topology view 
 * Click on *Pipeline Runs*
 
 image::module1/pipelines_detail.png[width=80%]
@@ -235,13 +234,24 @@ Once the Pipeline has finished, it will be shown as Pipeline Succeeded, and Pod 
 
 image::module1/pipeline_logs.png[width=60%]
 
+==== Verify the application is running as expected
+* Return to the topology view: Click *Topology* on the left menu.
+* Click on the UI Serverless deployment.
+* Click on the *Routes* under the Resources tab. Verify that the application is running.
+
+The catalog information is now available.
+
+image::module1/coolstore_website.png[width=80%]
+
+==== Explore metrics
+
 * Observe the application CPU usage
 
 In the Observe section of OpenShift Container Platform web console, you can access and manage monitoring features such as metrics, alerts, monitoring dashboards, and metrics targets. https://docs.openshift.com/container-platform/4.14/monitoring/monitoring-overview.html[More information^]
 
 * Go back to the Topology View, Click on *Topology* on the left menu.
 
-* Access the Observe tab.
+* Access the *Observe* tab.
 
 image::module1/coolstore_topology_observe.png[width=60%]
 
@@ -264,14 +274,6 @@ image::module1/available_metrics.png[width=80%]
 image::module1/events.png[width=80%]
 
 https://docs.openshift.com/container-platform/4.14/monitoring/reviewing-monitoring-dashboards.html[Reviewing monitoring dashboards^]
-
-==== Verify the application is running as expected
-* Return to the topology view: Click *Topology* on the left menu.
-* Click on the *Routes* under the Resources tab. Verify that the application is running.
-
-The catalog information is now available.
-
-image::module1/coolstore_website.png[width=80%]
 
 
 == Conclusion
