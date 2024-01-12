@@ -49,7 +49,7 @@ image::/module3/pipelinerun-error-detail.png[]
 
 We can now see that a security policy has failed the check and stopped the pipeline execution:
 
-* The first one is "0-Trusted Signature Policy": this means that the container image that has been built hasn't been signed by an appropriate signature, and has a "High" severity, thus it is not trustworty to get into production. This is indicated by the "Breaks Build" column with an "X" mark.
+* *"0-Trusted Signature Policy"*: this means that the container image that has been built hasn't been signed by an appropriate signature, and has a "High" severity, thus it is not trustworty to get into production. This is indicated by the "Breaks Build" column with an "X" mark.
 
 This policy is actually implemented in Red Hat Advanced Cluster Security (ACS), and the "acs-image-check" task uses the ACS CLI named roxctl to check the validity of these policies for the currently running pipeline. This is how these steps act as security gates that prevent untrusted content to go further away in the pipeline.
 
@@ -135,7 +135,7 @@ Now, in the next stages, this is where we have implemented additional security l
 
 image::/module3/pipeline-group-2.png[]
 
-* *"Build-image"* (group task labeled "1"):
+* *"Build-image"*:
 
 Enhancing Security with Tekton Chains
 
@@ -210,7 +210,7 @@ Let's now switch to OpenShift GitOps to see how the application gets deployed in
 
 * Open the OpenShift GitOps URL: https://openshift-gitops-server-openshift-gitops.{openshift_cluster_ingress_domain}
 
-* Login as user *"admin"* with password {password}
+* Login as user *"admin"* with password *{password}*
 
 * OpenShift GitOps uses a concept of an *"Application"* as a group of manifests stored in a git repository that need to be deployed altogether. Select the "Globex" application in the main page to access the details.
 
