@@ -132,7 +132,7 @@ output:
       skupper-router-7cfb8958f-gg2w2                2/2     Running   0             35s
       skupper-service-controller-5bf78d86c6-zjm5h   2/2     Running   0             33s 
 ----
-Note: Wait until all the pods are running, as shown above.
+*Note*: Wait until all the pods are running, as shown above.
 
 * Create the secret required by Red Hat Service Interconnect to access the current namespace. This token is linked to the secret created recently:
 
@@ -176,7 +176,7 @@ output:
 oc get secret -o yaml secret-interconnect > token.yaml
 ----
 
-* Edit the yaml file to remove the namespace:
+* Edit the yaml file to remove the namespace information:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -216,7 +216,7 @@ output:
 
 image::module2/coolstore-inventoryissue.png[width=80%]
 
-* Before leaving the cluster. Copy the RHSI URL and paste in your web browser. You will need it in the next section.
+* Before leaving the cluster. *Copy the RHSI URL* and paste in your web browser. You will need it in the next section.
 
 For example: https://skupper-coolstore-user2.apps.cluster-kbzn7.kbzn7.sandbox3018.opentlc.com/
 
@@ -405,7 +405,7 @@ Two sites will be visible, from the SNO (retail-location) and OpenShift (retail-
 
 
 == Bonus point using a declarative approach:
-In this section, you will move the database to a new namespace and to connect the database with the inventory service; this section follows a declarative approach; we do not need the skupper CLI.
+In this section, you will move the database to a new namespace and to connect the database with the inventory service; this section follows a declarative approach as the previous sections.
 
 * Remove the database from the current namespace
 
@@ -442,20 +442,6 @@ output:
       inventory-f6957f6d5-j5l2t                     1/1     Running   0          8m48s
       skupper-router-6b96d8fd57-7b55h               2/2     Running   0          8m34s
       skupper-service-controller-754f79b94d-mx4h5   1/1     Running   0          8m32s
-----
-
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
-oc get route
-----
-[.console-output]
-[source,subs="+attributes,macros+"]
-----
-output: 
-      NAME        HOST/PORT                                                    PATH   SERVICES    PORT   TERMINATION     WILDCARD
-      ....
-      globex-ui   globex-ui-demo.apps.cluster-hpxfn-1.sandbox933.opentlc.com          globex-ui   http   edge/Redirect   Non
 ----
 
 ** Create the secret required to access the current namespace:
@@ -501,7 +487,7 @@ output:
 oc get secret -o yaml secret-interconnect-database > token-database.yaml
 ----
 
-* Edit the yaml file to remove the namespace:
+* Edit the yaml file to remove the namespace information:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -539,12 +525,6 @@ oc new-project inventory-database-{user}
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-cd $HOME/app-platform/content/modules/ROOT/files/module-02
-----
-
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
 cat inventory-database.yaml
 ----
 
@@ -565,7 +545,7 @@ output:
       deployment.apps/inventory-database created
 ----
 
-* Create a new instance of RHSI using the ConfigMap:
+* Create a new instance of Red Hat Service Interconnect using the ConfigMap:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -681,7 +661,7 @@ oc delete pod inventory-f6957f6d5-7tggx
 ----
 
 
-* Explore the different components in RHSI:
+* Explore the different components in Red Hat Service Interconnect:
 
 ** **Topology**: Graphical representation of all the connections
 
@@ -707,9 +687,9 @@ image::module2/rhsi_processes_withtraffic.png[width=80%]
 
 In this module, you connected two services, one residing on OpenShift on the cloud and the other on Singe Node OpenShift (part of the Red Hat Edge offerings). 
 
-The applications were connected using Red Hat Service Interconnect. RHSI allows connectivity between multiple clusters but also at the edge. 
+The applications were connected using Red Hat Service Interconnect. Red Hat Service Interconnect allows connectivity between multiple clusters but also at the edge. 
 
-The bonus point module shows how RHSI can be available within the same cluster. In this section, you have connected a database in a namespace with the backend services in another namespace.
+The bonus point module shows how Red Hat Service Interconnect can be available within the same cluster. In this section, you have connected a database in a namespace with the backend services in another namespace.
 
 == More Information:
 
@@ -728,4 +708,4 @@ The bonus point module shows how RHSI can be available within the same cluster. 
 === Red Hat Service Interconnect
 * https://github.com/skupperproject[Interconnect: More use cases and examples^]
 * https://skupper.io/docs/declarative/index.html[RHSI Declarative approach^] 
-* https://skupper.io/start/index.html[RSHI command line^] 
+* https://skupper.io/start/index.html[Skupper command line^] 
