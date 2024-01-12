@@ -210,15 +210,20 @@ output:
       ....
       globex-ui   globex-ui-demo.apps.cluster-hpxfn-1.sandbox933.opentlc.com          globex-ui   http   edge/Redirect   Non
 ----
+
 * Copy the globex-ui URL in your web browser.
 * On the main menu, select the tab **Cool Stuff Store**
 
 image::module2/coolstore-inventoryissue.png[width=80%]
 
+* Before leaving the cluster. Copy the RHSI URL and paste in your web browser.
+
+For example: https://skupper-coolstore-user2.apps.cluster-kbzn7.kbzn7.sandbox3018.opentlc.com/
 
 **Notes**: 
 
 The inventory information is missing but the {app_name} website is still visible. Once access to the inventory service this will be resolved. In real situations, we want the {app_name} to be idempotent against losing access to the inventory service/database.
+
 
 == Inventory on Retail Store - (SNO)
 
@@ -349,14 +354,7 @@ output:
 
 * Verify that the application is fully functional with the inventory information:
 
-** Go to the OpenShift on AWS
-** Access the route 
-
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
-oc get routes
-----
+* Refresh the coolstore web page.
 
 image::module2/coolstore_fullworking.png[width=80%]
 
