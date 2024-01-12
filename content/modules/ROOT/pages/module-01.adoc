@@ -5,7 +5,7 @@ In this module, you will explore the OpenShift Developer experience to understan
 
 == Introduction
 
-In this lab, you will move two applications to OpenShift using the Developer Perspective. Using the Developer Perspective allows developers to move their applications quickly with a click of a button. 
+In this lab, you will move two applications to OpenShift using the Developer Perspective. Using the Developer Perspective allows developers to move their applications quickly with a click of a button.
 
 In your Red Hat OpenShift running on AWS, you will deploy the rest of the {app_name}. OpenShift already has installed OpenShift Serverless and https://docs.openshift.com/pipelines/1.13/install_config/installing-pipelines.html#op-installing-pipelines-operator-in-web-console_installing-pipelines[OpenShift Pipelines Operators^].
 
@@ -34,7 +34,7 @@ The serverless cloud computing model provides developers with a modern, cloud-na
 [.console-input]
 [source,sh,subs="attributes",role=execute]
 ----
-oc new-project coolstore-dev-{user} 
+oc new-project coolstore-dev-{user}
 ----
 
 * Clone the project to access the files.
@@ -80,7 +80,7 @@ The Topology view in the Developer perspective of the web console provides a vis
 
 ==== Review the set of microservices that composed the Coolstore application
 
-** Access the OpenShift Web Console 
+** Access the OpenShift Web Console
 
 * Obtain the console URL:
 
@@ -92,15 +92,15 @@ The Topology view in the Developer perspective of the web console provides a vis
 
 * Use your OpenShift credentials to login in the Web Console.
 
-* user: {user}  
+* user: {user}
 
-* password: {password} 
+* password: {password}
 
 ** Click on *Topology* to access the Developer's Perspective
 
 image::module1/coolstore_topology.png[width=80%]
 
-All the components shown are deployments, which are in charge of managing your application. They are all in blue, indicating that the application is running. The arrows will indicate which components are connected.  
+All the components shown are deployments, which are in charge of managing your application. They are all in blue, indicating that the application is running. The arrows will indicate which components are connected.
 
 https://docs.openshift.com/container-platform/latest/applications/odc-viewing-application-composition-using-topology-view.html[For more information^]
 
@@ -127,7 +127,14 @@ output:
 1. Access Developer Perspective by clicking on *Developer* on the left menu.
 2. Click on *+Add*
 3. *Import from Git*
-4. Git Repo URL: https://github.com/OpenShiftDemos/web-nodejs.git
+4. Git Repo URL
++
+[.console-input]
+[source,bash,subs="+attributes",role=execute]
+----
+https://github.com/OpenShiftDemos/web-nodejs.git
+----
++
 5. Edit *Import Strategy* and select *Builder Image* (keep Node.js and Builder Image version: 16-ubi8)
 6. On Resource Type, select *Serverless Deployment*
 7. Click on Advanced options: Deployment and add *an environment variable* to connect with the Gateway URL:
@@ -161,7 +168,7 @@ image::module1/serverless_resources.png[width=80%]
 * Verify the build process:
 
 1. Click on the *View Logs* on the *Builds* section
-2. Verify that the build is running and that the logs have no issues. The log will show *Push successful* in the last line once has finished. 
+2. Verify that the build is running and that the logs have no issues. The log will show *Push successful* in the last line once has finished.
 
 **Notes**: The build might take a few seconds to complete.
 
@@ -201,11 +208,18 @@ Red Hat OpenShift Pipelines is a cloud-native, continuous integration and contin
 1. Access Developer Perspective
 2. Click on  *+Add*
 3. *Import from Git*
-4. Git Repo URL: https://github.com/OpenShiftDemos/catalog-spring-boot.git
+4. Git Repo URL:
++
+[.console-input]
+[source,bash,subs="+attributes",role=execute]
+----
+https://github.com/OpenShiftDemos/catalog-spring-boot.git
+----
++
 5. Edit *Import Strategy* and select *Builder Image* (keep Java and Builder Image version: *openjdk-17-ubi8*)
-6. Name: *catalog-spring-boot* 
+6. Name: *catalog-spring-boot*
 7. On Resource Type, select *Deployment*
-8. Select the checkbox: *Pipelines*
+8. Select the checkbox: *Add Pipeline*
 
 Verify your input data is the same as shown below:
 
@@ -215,7 +229,7 @@ image::module1/deployment.png[width=80%]
 
 ==== Verify build and deployment:
 
-* Click the new Deployment *catalog-spring-boot* on the Topology view 
+* Click the new Deployment *catalog-spring-boot* on the Topology view
 * Click on *Pipeline Runs*
 
 image::module1/pipelines_detail.png[width=80%]
@@ -236,7 +250,7 @@ image::module1/pipeline_logs.png[width=60%]
 
 * Verify the application is running as expected
 ** Return to the topology view: Click *Topology* on the left menu.
-** Click on the UI Serverless deployment.
+** Click on the UI Serverless deployment, *web-nodejs-git...*
 ** Click on the *Routes* under the Resources tab. Verify that the application is running.
 
 The catalog information is now available.
@@ -264,7 +278,7 @@ image::module1/dashboard_metrics.png[width=80%]
 
 * Explore all the available metrics:
 
-** Select from the Dashboard dropdown the different metrics. 
+** Select from the Dashboard dropdown the different metrics.
 
 image::module1/available_metrics.png[width=80%]
 
@@ -277,8 +291,8 @@ https://docs.openshift.com/container-platform/4.14/monitoring/reviewing-monitori
 
 == Conclusion
 
-As a Developer, you can create, build, and manage applications using the Developer Perspective or the command line. The Developer perspective is a powerful tool that enables you to move applications from a Git repository, helm chart, jar file, and much more. 
-*Serverless* allows the deployment of applications without the burden of operations. The application's pods will be created depending on how much traffic is received. Serverless is a way to save costs since the applications will only run when receiving traffic. 
+As a Developer, you can create, build, and manage applications using the Developer Perspective or the command line. The Developer perspective is a powerful tool that enables you to move applications from a Git repository, helm chart, jar file, and much more.
+*Serverless* allows the deployment of applications without the burden of operations. The application's pods will be created depending on how much traffic is received. Serverless is a way to save costs since the applications will only run when receiving traffic.
 *OpenShift Pipelines* allows teams to build and deploy applications via ci/cd. Pipelines can be autogenerated when selecting the Pipelines checkbox.
 
 == More Information:
