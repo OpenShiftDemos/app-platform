@@ -250,7 +250,7 @@ image::module1/pipeline_logs.png[width=60%]
 
 * Verify the application is running as expected
 ** Return to the topology view: Click *Topology* on the left menu.
-** Click on the UI Serverless deployment.
+** Click on the UI Serverless deployment, *web-nodejs-git...*
 ** Click on the *Routes* under the Resources tab. Verify that the application is running.
 
 The catalog information is now available.
