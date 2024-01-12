@@ -83,6 +83,7 @@ The Topology view in the Developer perspective of the web console provides a vis
 ** Access the OpenShift Web Console 
 
 * Obtain the console URL:
+
 [source,sh,subs="attributes",role=execute]
 ----
 {openshift_console_url}
@@ -90,6 +91,7 @@ The Topology view in the Developer perspective of the web console provides a vis
 * Copy the console URL in your web browser.
 
 * Use your OpenShift credentials to login in the Web Console.
+
 [.console-input]
 [source,sh,subs="attributes",role=execute]
 ----
@@ -99,7 +101,7 @@ user: {user}
 [.console-input]
 [source,sh,subs="attributes",role=execute]
 ----
-password: openshift_cluster_admin_password
+password: {openshift_cluster_admin_password}
 ----
  
 
@@ -140,19 +142,29 @@ output:
 7. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
     - *name*: SECURE_COOLSTORE_GW_ENDPOINT
     - *value*: Gateway's URL (Paste the Gateway URL)
-8. Click on *Create*
+
+
+Verify your input data is the same as shown below:
+
+image::module1/serverless.png[width=80%]
+
+* Click on *Create*
 
 https://docs.openshift.com/container-platform/latest/applications/creating_applications/odc-creating-applications-using-developer-perspective.html[For more information^]
 
 ==== Verify build and deployment:
 
-1. Select the new Service.
+1. Select the new Service by clicking on * No Revision*
 2. On the right menu, Click on the *Resources* tab
 
 image::module1/serverless_resources.png[width=80%]
 
-1. Click on the *View Logs*
-2. Verify that the build is running and that the logs have no issues.
+*Note*: Revision will be ready once the build process is completed.
+
+* Verify the build process:
+
+1. Click on the *View Logs* on the *Build* section
+2. Verify that the build is running and that the logs have no issues. The log will show *Push successful* in the last line once has finished. 
 
 **Notes**: The build might take a few seconds to complete.
 
@@ -160,26 +172,25 @@ image::module1/build_ok.png[width=80%]
 
 Once the Build has finished the application will run successfully.
 
-* Go back to the *Topology view*: Click on Topology on the left menu.
+* Go back to the *Topology view*: Click on *Topology* on the left menu.
 
 image::module1/coolstore_topology_web.png[width=80%]
 
-The serverless deployment will be triggered once build is done and when it receives HTTP requests when accessing the application in the web browser.
+The application is triggered once the build process is completed. Additionally, the application will restart when it receives any HTTP requests by accessing the application in the web browser.
 
-==== Verify the application is running as expected
+==== Verify the application is running
 
- 
-* Click on the *Routes* under the Resources tab. Verify that the application is running
+* Click on the *Routes* under the Resources tab. Verify that the application is running.
+
 
 image::module1/coolstore_website_black.png[width=80%]
 
-* Verify the pod is running.
+**Notes**: As you can see, no catalog is available. We need to install the catalog application to access the catalog data.
 
 * Explore the application logs by clicking on *View logs* on the *Resources Tab* -> *Pod* section.
 
 image::module1/logs_webui.png[width=60%]
 
-**Notes**: As you can see, no catalog is available. We need to install the catalog application to access the catalog data.
 
 *Congratulations* you build and deploy a new application into OpenShift in just a few clicks!
 
@@ -193,22 +204,26 @@ Red Hat OpenShift Pipelines is a cloud-native, continuous integration and contin
 3. *Import from Git*
 4. Git Repo URL: https://github.com/coolstore-demo/catalog-spring-boot.git
 5. Edit *Import Strategy* and select *Builder Image* (keep Java and Builder Image version: *openjdk-17-ubi8*)
-6. On Resource Type, select *Deployment*
-7. Name: catalog-spring-boot 
+6. Name: *catalog-spring-boot* 
+7. On Resource Type, select *Deployment*
 8. Select the checkbox: *Pipelines*
-9. Click on *Create*
 
+Verify your input data is the same as shown below:
+
+image::module1/deployment.png[width=80%]
+
+* Click on *Create*
 
 ==== Verify build and deployment:
 
-* Select the Service revision on the topology 
+* Click the new Deployment on the Topology view 
 * Click on *Pipeline Runs*
 
 image::module1/pipelines_detail.png[width=80%]
 
 * Verify that the pipeline is running and that everything is green.
 
-**Notes**: The pipeline might take a few minutes to complete. Explore the Pipeline Run's logs.
+**Notes**: The pipeline might take a few minutes to complete. Explore the Pipeline Run logs.
 
 image::module1/pipelines_deployment.png[width=80%]
 
@@ -220,29 +235,33 @@ Once the Pipeline has finished, it will be shown as Pipeline Succeeded, and Pod 
 
 image::module1/pipeline_logs.png[width=60%]
 
-==== Observe the application CPU usage
+* Observe the application CPU usage
+
 In the Observe section of OpenShift Container Platform web console, you can access and manage monitoring features such as metrics, alerts, monitoring dashboards, and metrics targets. https://docs.openshift.com/container-platform/4.14/monitoring/monitoring-overview.html[More information^]
 
-* In the topology view, Click on *Topology* on the left menu.
+* Go back to the Topology View, Click on *Topology* on the left menu.
+
 * Access the Observe tab.
 
-image::module1/coolstore_topology_usage.png[width=60%]
+image::module1/coolstore_topology_observe.png[width=60%]
 
 * Click on *View Dashboard* to explore the application metrics:
 
-image::module1/view_dashboard.png[width=60%]
+image::module1/view_dashboard.png[width=0%]
 
-** Explore:
-
-*** CPU usage
-
-*** Memory usage
-
-*** Bandwidth information
-
-*** Packet rate information
+* Explore the *CPU Usage*:
 
 image::module1/dashboard_metrics.png[width=80%]
+
+* Explore all the available metrics:
+
+** Select from the Dashboard dropdown the different metrics. 
+
+image::module1/available_metrics.png[width=80%]
+
+* Explore the *events*:
+
+image::module1/events.png[width=80%]
 
 https://docs.openshift.com/container-platform/4.14/monitoring/reviewing-monitoring-dashboards.html[Reviewing monitoring dashboards^]
 
