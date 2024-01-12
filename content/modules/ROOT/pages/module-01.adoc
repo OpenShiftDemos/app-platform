@@ -124,13 +124,13 @@ output:
     gateway-vertx-coolstore-dev-user2.apps.cluster-kbzn7.kbzn7.sandbox3018.opentlc.com
 ----
 
-1. Access Developer Perspective
+1. Access Developer Perspective by clicking on *Developer* on the left menu.
 2. Click on *+Add*
 3. *Import from Git*
 4. Git Repo URL: https://github.com/OpenShiftDemos/web-nodejs.git
 5. Edit *Import Strategy* and select *Builder Image* (keep Node.js and Builder Image version: 16-ubi8)
 6. On Resource Type, select *Serverless Deployment*
-7. Click on Advanced options: Deployment and add a variable to connect with the Gateway URL:
+7. Click on Advanced options: Deployment and add *an environment variable* to connect with the Gateway URL:
 
 Copy the gateway URL from the route, include https and / at the end. For example:
 https://gateway-vertx-coolstore-dev-user2-test3.apps.cluster-kbzn7.kbzn7.sandbox3018.opentlc.com/
@@ -151,7 +151,7 @@ https://docs.openshift.com/container-platform/latest/applications/creating_appli
 
 ==== Verify build and deployment:
 
-1. Select the new Service by clicking on *No Revision*
+1. Select the new Service by clicking on *No Revisions*
 2. On the right menu, Click on the *Resources* tab
 
 image::module1/serverless_resources.png[width=80%]
@@ -234,16 +234,15 @@ Once the Pipeline has finished, it will be shown as Pipeline Succeeded, and Pod 
 
 image::module1/pipeline_logs.png[width=60%]
 
-==== Verify the application is running as expected
-* Return to the topology view: Click *Topology* on the left menu.
-* Click on the UI Serverless deployment.
-* Click on the *Routes* under the Resources tab. Verify that the application is running.
+* Verify the application is running as expected
+** Return to the topology view: Click *Topology* on the left menu.
+** Click on the UI Serverless deployment.
+** Click on the *Routes* under the Resources tab. Verify that the application is running.
 
 The catalog information is now available.
 
 image::module1/coolstore_website.png[width=80%]
 
-==== Explore metrics
 
 * Observe the application CPU usage
 
