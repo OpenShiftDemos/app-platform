@@ -9,7 +9,7 @@ DevSecOps stands for Development, Security and Operations, and is a hollistic ap
 
 == Application Architecture
 
-In this lab, we will be showcasing a three-layer architecture with three logical types of sites.
+The following diagram shows a typical multicluster environment, with a central cluster called HUB, a several clusters covering the different environments from Development to production.
 
 * The first site is the Hub, which serves as the central point for managing and monitoring the cloud-native infrastructure. This is where we will be performing cluster management, advanced cluster security, and hosting a secure image registry, also known as OpenShift Platform Plus (OPP). This is where the DevSecOps pipeline is hosted and run. The developers will be submitting their code builds to the pipeline, and various security tools will be used throughout the pipeline to mitigate the risk of harmful applications or code being deployed in production. The security tools used in the pipeline will be demonstrated as part of the demo, including image scanning and signing, and security gates in the CI/CD pipeline.
 
@@ -19,54 +19,53 @@ In this lab, we will be showcasing a three-layer architecture with three logical
 
 image::/module3/application-architecture.png[width=80%]
 
+In our example, and for the sake of simplifying this lab, we will be co-locating the HUB and DEV cluster in the environment that we use.
+
+Let's examine all the components involved in such a DevSecOps pipeline to deploy our e-commerce application named Globex.
+
 == The DevSecOps pipeline
-
-
 
 In this section, we will have a look at the end-to-end DevSecOps pipeline and explore the security gates that are provided in it.
 
-* Login to the openshift console using user *admin* and password {password} using this URL: https://{openshift_console_url}
+* Login to the openshift console using user *admin* and password *{password}* using this URL: https://{openshift_console_url}
 
-*ingress domain*: {openshift_cluster_ingress_domain}
+* In the openshift console left menu, Select the Administrator View, then click on *Pipelines -> Pipelines*, select Project *"ci"*, as shown in the screenshot below.
 
+image::/module3/pipelines.png[width=80%]
 
-In the openshift console left menu, open the pipelines section then click on pipelines, as show in the screenshot below.
+*  Select the *PipelineRuns* tab, as shown below.
 
-image::/module3/pipelines-view.png[width=80%]
+image::/module3/pipelineruns.png[width=100%]
 
-In the filter section on the right panel, enter 'app-globex'. You should see two pipelines, as seen below
+Let's look why the first pipeline has failed. Click on the pipeline with the failed status. This should take you to the detailed view of the last execution, as shown below:
 
-image::/module3/pipelines-filtered.png[width=100%]
-
-Let's look why the first pipeline has failed. In the second column named "Last run", click on the pipeline with the failed status. This should take you to the detailed view of the last run, as shown below:
-
-image::/module3/failed-pipeline.png[]
+image::/module3/pipelinerun-error.png[]
 
 The "Log Snippet" section on the bottom-right side shows a quick overview of the reasons why the pipeline has failed. Let's explore more details.
 
-* Click on the failed task named "acs-image-check" hightlighted in red in the pipeline diagram.
+* Click on the failed task named *"acs-image-check"* highlighted in red in the pipeline diagram.
 
-image::/module3/details-failed-status.png[]
+image::/module3/pipelinerun-error-detail.png[]
 
-We can now see that 2 security policies have failed:
+We can now see that a security policy has failed the check and stopped the pipeline execution:
 
-* The first one is "Trusted Signature Policy": this means that the container image that has been built hasn't been signed by an appropriate signature, and has a "High" severity, thus it is not trustworty to get into production. This is indicated by the "Breaks Build" column with an "X" mark.
+* *"0-Trusted Signature Policy"*: this means that the container image that has been built hasn't been signed by an appropriate signature, and has a "High" severity, thus it is not trustworty to get into production. This is indicated by the "Breaks Build" column with an "X" mark.
 
-* The second one is "Red Hat Package Manager in Image", except this one doesn't fail the build, because it has a low severity.
-
-These 2 policies are actually implemented in Red Hat Advanced Cluster Security (ACS), and the "acs-image-check" task uses the ACS CLI named roxctl to check the validity of these policies for the currently running pipeline. This is how these steps act as security gates that prevent untrusted content to go further away in the pipeline.
+This policy is actually implemented in Red Hat Advanced Cluster Security (ACS), and the "acs-image-check" task uses the ACS CLI named roxctl to check the validity of these policies for the currently running pipeline. This is how these steps act as security gates that prevent untrusted content to go further away in the pipeline.
 
 == Defining security policies in Red Hat Advanced Cluster Security (Red Hat ACS)
 
-Now let's have a more detailed look at those policies directly in Red Hat ACS.
+Now let's have a more detailed look at those policies directly in Red Hat Advanced Cluster Security.
 
-* Open the ACS console and login as user "admin" with the provided credentials in the lab instructions, using the http_password option to authenticate. You might need to accept a certificate to go through this step.
+* In a new tab, open the Red Hat ACS console at https://central-stackrox.{openshift_cluster_ingress_domain} 
 
-* Once you are on the ACS console, select "Platform Configuration -> Policy Management" from the left-side menu. This should take you to the policies page.
+* Login as user *"admin"* and password *{password}*.
+
+* Once you are on the Red Hat ACS console, select "Platform Configuration -> Policy Management" from the left-side menu. This should take you to the policies page.
 
 image::/module3/acs-policies.png[]
 
-ACS provides about 85 out-of-the-box policies to help implement security best practices and sageguards across your fleets of clusters, you can explore some of them by scrolling through the list of policies.
+Red Hat ACS provides about 85 out-of-the-box policies to help implement security best practices and sageguards across your fleets of clusters, you can explore some of them by scrolling through the list of policies.
 
 * Let's now look at the "Trusted Image Signature" policy that was triggered in the pipeline previously. In the "Filter policies" section, type "Policy" then hit enter, then type "Trusted Signature".
 
@@ -120,21 +119,23 @@ That's it! You now have a better understanding of how Red Hat ACS allows you to 
 
 Now that we are familiar with how the previous pipeline was integrated with Red Hat ACS to implement security gates, let's have a look at the more advanced devsecops pipeline called "app-globex-ui-pipeline".
 
-* Go back to the OpenShift Console, and from the left side menu, select Pipelines -> Pipelines. In the right-side window, select the "PipelineRuns" tab and click on the pipelineRun with a "Succeeded" status.
+* Go back to the OpenShift Console: https://{openshift_console_url}
+
+* From the left side menu, select Pipelines -> Pipelines. In the right-side window, select the "PipelineRuns" tab and click on the pipelineRun with a "Succeeded" status.
 
 image::/module3/advanced-devsecops-pipelinerun.png[]
 
 This will take you to a diagram with the last pipeline execution. Let's now examine the different steps, and focus on the tasks that provide an extra layer of security.
 
-image::/module3/advanced-pipeline-steps-1.png[]
+image::/module3/pipeline-group-1.png[]
 
 In the early stages of the pipeline, we do a traditional source clone, then we verify the code using SonarQube and verify the source code commits, to make sure the code is legitimate.
 
 Now, in the next stages, this is where we have implemented additional security layers that will be detailed below.
 
-image::/module3/advanced-pipeline-steps-2.png[]
+image::/module3/pipeline-group-2.png[]
 
-* *"Build-sign-image"* (group task labeled "1"):
+* *"Build-image"*:
 
 Enhancing Security with Tekton Chains
 
@@ -144,20 +145,17 @@ This task also uses Tekton Chains, a Kubernetes Custom Resource Definition (CRD)
 
 This task is responsible for emitting two important TaskResults i.e. IMAGE_URL and IMAGE_DIGEST. Those parameters are very important because they are the ones that trigger Tekton Chains to create a digital signature for your container image.
 
-Now let's have a look at the following tasks, in the group labeled 2.
+Now let's have a look at the following tasks:
+
+image::/module3/pipeline-group-3.png[]
 
 * *acs-image-check*: this task uses the roxctl CLI to check build-time violations of your security policies in your image. In this demo, we have set up a policy that verifies signatures on your container image. If this policy is enabled and your container image is unsigned or signed by non trusted source, the pipeline will fail. If the signature is available and is trusted, this pipeline task will complete successfully.
 
-* acs-image-scan: The acs-image-scan uses the roxctl CLI to return the components and vulnerabilities found in the image . Any vulnerabilities that exist in packages embedded in the image will be reported.
+* *acs-image-scan*: The acs-image-scan uses the roxctl CLI to return the components and vulnerabilities found in the image . Any vulnerabilities that exist in packages embedded in the image will be reported.
 
 * *scan-export-sbom*: This task is responsible for scanning any vulnerabilities that exist in our SBOM and exports our SBOM to a externally accessible repository. For scanning, this task uses a 3rd-party tool called Grype which is a vulnerability scanner for container images and filesystems.
 
-Finally, let's explore the tasks in the group labeled 3.
-
 * *acs-deploy-check*: This task uses the roxctl CLI to check the deployment YAML files for any security issues or bad practices, such as running a container image as root, or not defining health checks etc. It scans the YAML file that is stored in the git repository and used for a gitops approach to deploy the application. We will talk about this in the "Adopting a GitOps approach for deployments across multiple clusters" section.
-
-* *verify-tlog-signature*: An important feature of Tekton Chains is that it integrates seamlessly with an application called Rekor.  Rekor aims to provide an immutable, tamper-resistant ledger of metadata generated within a software supply chain.  Our Tekton Chains instance is preconfigured to implicitly call the Rekor API to write the metadata about our signature to a transparency log which could be used later for verification purposes. 
-This task uses that metadata to verify the integrity of the assets before proceeding into the next tasks that deploy the application into production using OpenShift GitOps.
 
 That's it! You now have a deeper understanding of the Security capabilities that provide a Trusted Software Supply Chain (or DevSecOps approach), using OpenShift Pipelines (tekton chains), and Red Hat Advanced Cluster Security (Red Hat ACS).
 
@@ -168,7 +166,9 @@ Red Hat Quay is a trusted, geo-replicated, security enabled container registry t
 
 Let's now have a look at container image in Quay, and verify that it has indeed been signed by the pipeline.
 
-* Open the Quay URL and login as user "quayadmin" with the password provided in the lab instructions. Next, click the *"quayadmin/globex-ui"* repository, and click on 'Tags' on the left side menu
+* In a new tab, Open the Quay URL: https://quay-{guid}.{openshift_cluster_ingress_domain}
+
+* Login as user *"quayadmin"* and password *{password}*. Next, click the *"quayadmin/globex-ui"* repository, and click on 'Tags' on the left side menu
 
 image::/module3/quay-tags.png[]
 
@@ -178,23 +178,25 @@ You can also click on the *"Show signatures"* button on the top-right side to re
 
 image::/module3/quay-image-signed.png[]
 
-Quay also provides a summary of the vulnerabilitie of the container image, but since we've already seen that with Red Hat ACS, let's skip to the next section.
+Quay also provides a summary of the vulnerabilities of the container image, but since we've already seen that with Red Hat ACS, let's skip to the next section.
 
 That's it, you now have a better understanding of Quay capabilities to store the signed container images, along with the metadata such as SBOMs, signatures etc.
 
 == Adopting a GitOps approach for deployments across multiple clusters
 
-As mentioned in the application architecture section, our "Globex" application is deployed across multiple clusters using a OpenShift GitOps (based on argocd). There is one argocd instance per cluster, and a share gitops repository that contains the deployment manifests (yaml files), that gets updated by the pipeline whenever there is a new update to the soure code.
+As mentioned in the application architecture section, in a typical multicluster scenario, our "Globex" application would be deployed across multiple clusters using a OpenShift GitOps (based on argocd). There is one argocd instance per cluster, and a shared gitops repository that contains the deployment manifests (yaml files), that gets updated by the pipeline whenever there is a new update to the soure code.
 
 Let's explore this step in the pipeline, then have a look at argocd to understand how it uses the manifests to target the desired cluster.
 
 * On the OpenShift console, on the left menu, Select Pipelines -> Pipelines, and select the pipelineRun with the "Succeeded" status (the same one as in the previous section).
 
-image::/module3/gitops-update-manifest.png[]
+image::/module3/pipeline-group-4.png[]
 
 * *update-dev-manifest*: This task is responsible for updating the manifests in the git repository, by updating the container image reference in the deployment yaml file, using Kustomize. This is a standard approach when using tools like OpenShift GitOps (based on argocd). Let's have a look at the yaml file in Gitea.
 
-* Open Gitea's URL provided in the instructions, and login using the provided credentials: username: dev-user, password: openshift.
+* In a new tab, open Gitea's URL: https://gitea.{openshift_cluster_ingress_domain}
+
+* Login using the provided credentials: username: *dev-user*, password: *openshift*.
 
 * Click on the last commit id, as shown in the screenshot below:
 
@@ -206,7 +208,9 @@ image::/module3/gitea-updated-manifest.png[]
 
 Let's now switch to OpenShift GitOps to see how the application gets deployed in the DEV cluster using argocd.
 
-* Open the OpenShift GitOps URL provided in the instructions and login as user "admin" with the provided password.
+* Open the OpenShift GitOps URL: https://openshift-gitops-server-openshift-gitops.{openshift_cluster_ingress_domain}
+
+* Login as user *"admin"* with password *{password}*
 
 * OpenShift GitOps uses a concept of an *"Application"* as a group of manifests stored in a git repository that need to be deployed altogether. Select the "Globex" application in the main page to access the details.
 
@@ -218,24 +222,29 @@ image::/module3/gitops-app-details-more.png[]
 
 * Close the application details window, and explore the application page to see all the kubernetes resources that are deployed by OpenShift GitOps to the target cluster / namespace, such as the deployments, the services, etc.
 
+* Let's see the same resources deployed in the application namespace *"globex"* with this URL: https://{openshift_console_url}/topology/ns/globex?view=graph
+
+image::/module3/globex-app.png[]
+
+* Let's open the application to verify that it is running as expected: https://globex-ui-globex.{openshift_cluster_ingress_domain}/products
+
+image::/module3/globex-ui.png[]
+
+
 That's it, you now have a better understanding of how the DevSecOps pipeline is combined with OpenShift GitOps for a multicluster deployment of the "Globex" application. 
 
-At the end of the pipeline, the same logic that we've seen for the DEV cluster is applied to the PRODUCTION cluster, with a dedicated OpenShift GitOps running on the production cluster to handle the deployments. The slight addition is that a pull request is created in the git repository to serve as an approval gate before the deployment is accepted into the production environment, as shown in the pipeline below.
-
-image::/module3/gitops-pull-request.png[]
 
 == Summary
 
 Here a quick summary of all you've seen in this lab:
 
-* OpenShift Platform Plus provided is a comprehensive solution that provides multicluster management (RH ACM), continuous security (RH ACS) and a Trusted Registry (Red Hat Quay) that serve as a great foundation to implement a Trusted Software Supply Chain and adopt a DevSecOps approach.
+* OpenShift Platform Plus provided is a comprehensive solution that provides multicluster management (RH ACM, not seen in the lab), continuous security (Red Hat ACS) and a Trusted Registry (Red Hat Quay) that serve as a great foundation to implement a Trusted Software Supply Chain and adopt a DevSecOps approach.
 
 * OpenShift Pipelines (based on Tekton) offers advanced CI/CD capabilities, and allow a direct integration with RH ACS to implement a DevSecOps approach. It also provides advanced capabilities like image signing through the Tekton Chains controller.
 
 * Red Hat Advanced Cluster Security offers out-of-the-box security capabilities such as security policies and image scanning for vulnerabilities to a continuous security monitoring across all your clusters.
 
 * OpenShift GitOps (based on argocd) allows you to adopt a GitOps approach to deploy your application across different environments and multiple clusters, from development to production and all intermediate stages.
-
 
 
 == Learning References
