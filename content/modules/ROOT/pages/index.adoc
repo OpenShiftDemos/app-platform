@@ -4,8 +4,7 @@
 
 **Welcome to our workshop!**
 
-This lab will give attendees a comprehensive understanding of OpenShift as an application platform that can accelerate their day-to-day activities, from modernization to adopting DevSecOps combined with a GitOps approach to running applications in hybrid cloud environments to the edge.
-
+This lab will give attendees a comprehensive understanding of OpenShift as an application platform that can accelerate their day-to-day activities, from modernization to adopting a DevSecOps and GitOps approach to running applications in a hybrid cloud and at the edge.
 
 After completing the lab, you should feel comfortable speaking with customer application and developer teams about the benefits of using OpenShift as the application platform they need to build, deploy, manage, and auto-scale their applications with serverless.
 
