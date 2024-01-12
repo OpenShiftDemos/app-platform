@@ -57,13 +57,15 @@ This policy is actually implemented in Red Hat Advanced Cluster Security (ACS), 
 
 Now let's have a more detailed look at those policies directly in Red Hat Advanced Cluster Security.
 
-* In a new tab, open the Red Hat ACS console at https://https://central-stackrox.{openshift_cluster_ingress_domain} and login as user "admin" and password *{password}*, using the http_password option to authenticate. You might need to accept a certificate to go through this step.
+* In a new tab, open the Red Hat ACS console at https://central-stackrox.{openshift_cluster_ingress_domain} 
 
-* Once you are on the ACS console, select "Platform Configuration -> Policy Management" from the left-side menu. This should take you to the policies page.
+* Login as user *"admin"* and password *{password}*.
+
+* Once you are on the Red Hat ACS console, select "Platform Configuration -> Policy Management" from the left-side menu. This should take you to the policies page.
 
 image::/module3/acs-policies.png[]
 
-ACS provides about 85 out-of-the-box policies to help implement security best practices and sageguards across your fleets of clusters, you can explore some of them by scrolling through the list of policies.
+Red Hat ACS provides about 85 out-of-the-box policies to help implement security best practices and sageguards across your fleets of clusters, you can explore some of them by scrolling through the list of policies.
 
 * Let's now look at the "Trusted Image Signature" policy that was triggered in the pipeline previously. In the "Filter policies" section, type "Policy" then hit enter, then type "Trusted Signature".
 
