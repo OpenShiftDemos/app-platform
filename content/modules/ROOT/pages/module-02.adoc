@@ -629,7 +629,7 @@ The inventory information is now available.
 
 * Follow these steps *ONLY if you don't see the inventory information yet*. Review the inventory logs and restart the pod.
 
-. Go back to the inventory project:
+**  Go back to the inventory project:
 
 [.console-input]
 [source,sh,subs="attributes",role=execute]
@@ -637,7 +637,7 @@ The inventory information is now available.
 oc project inventory-{user}
 ----
 
-. Review the logs:
+** Review the logs:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -645,7 +645,7 @@ oc project inventory-{user}
 oc get pods
 ----
 
-. Use the inventory pod's name for the
+** Use the inventory pod's name for the
 following commands. For example:
 
 
@@ -655,7 +655,7 @@ following commands. For example:
 oc logs inventory-f6957f6d5-7tggx
 ----
 
-. Rollout a new deployment:
+** Rollout a new deployment:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -663,7 +663,7 @@ oc logs inventory-f6957f6d5-7tggx
 oc rollout restart deployment/inventory
 
 ----
-. Refresh the coolstore web page.
+** Refresh the coolstore web page.
 
 ==  Explore the different components in Red Hat Service Interconnect:
 
