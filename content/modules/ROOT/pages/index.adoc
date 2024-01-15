@@ -12,11 +12,11 @@ After completing the lab, you should feel comfortable speaking with customer app
 
 This lab consists of 3 modules to enable you with hands-on to try solutions connected with the application platform story.
 
-* Developer Experience & Application Modernization (30 mins)
+* Developer Experience & Application Modernization (20 mins)
 
 ** Explore developer experience to understand developers' journeys to modernize and build applications. This module will show how the OpenShift Application Platform brings developer productivity by reducing complexity and overhead from operations. 
 
-* Extend to the edge and interconnect (20 mins)
+* Extend to the edge and interconnect (30 mins)
 
 ** Extend Red Hat to the Edge to run workloads anywhere and connect easily with Red Hat Service Interconnect in hybrid cloud environments and at the edge.
 
