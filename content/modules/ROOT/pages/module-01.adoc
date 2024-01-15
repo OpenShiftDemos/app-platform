@@ -110,20 +110,6 @@ As you can see, everything is there except the UI and the catalog. In the next s
 
 In this section, you will move the UI source code into OpenShift using the Developer Perspective. OpenShift will create an automated ci/cd pipeline and all the manifests required by the application.
 
-* Copy the Gateway URL to be used in the next task:
-
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
-oc get routes
-----
-[.console-output]
-[source,subs="+attributes,macros+"]
-----
-output:
-    gateway-vertx-coolstore-dev-user2.apps.cluster-kbzn7.kbzn7.sandbox3018.opentlc.com
-----
-
 1. Access Developer Perspective by clicking on *Developer* on the left menu.
 2. Click on *+Add*
 3. *Import from Git*
@@ -139,14 +125,10 @@ https://github.com/OpenShiftDemos/web-nodejs.git
 6. On Resource Type, select *Serverless Deployment*
 7. Click on Advanced options: Deployment and add *an environment variable* to connect with the Gateway URL:
 
-Copy the gateway URL from the route, include https and / at the end. For example:
-https://gateway-vertx-coolstore-dev-user2-test3.apps.cluster-kbzn7.kbzn7.sandbox3018.opentlc.com/
-Ensure the URL is working before pasting it.
+*Note*: Ensure the Gateway URL is working before pasting it.
 
     - *name*: SECURE_COOLSTORE_GW_ENDPOINT
-    - *value*: https://Gateway_URL/
-
-
+    - *value*: https://gateway-vertx-coolstore-dev-{user}.{openshift_cluster_ingress_domain}/
 
 Verify your input data is the same as shown below:
 

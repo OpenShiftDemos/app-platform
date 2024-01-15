@@ -215,10 +215,6 @@ output:
 
 image::module2/coolstore-inventoryissue.png[width=80%]
 
-* Before leaving the cluster. *Copy the RHSI URL* and paste in your web browser. You will need it in the next section.
-
-For example: https://skupper-coolstore-user2.apps.cluster-kbzn7.kbzn7.sandbox3018.opentlc.com/
-
 **Notes**:
 
 The inventory information is missing but the {app_name} website is still visible. Once access to the inventory service this will be resolved. In real situations, we want the {app_name} to be idempotent against losing access to the inventory service/database.
@@ -361,21 +357,15 @@ The inventory information is available now.
 
 == Explore services and connections with Red Hat Service Interconnect UI (Central Hub - OpenShift on AWS)
 
-* Using your web browser access the Red Hat Service Interconnect UI:
+*Note*: Red Hat Service Interconnect UI is only installed in the hub cluster: OpenShift in AWS.
 
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
-oc get route
-----
-[.console-output]
-[source,subs="+attributes,macros+"]
-----
-output:
-...
-skupper                skupper-demo-service.apps.cluster-rqk9v.rqk9v.sandbox1343.opentlc.com                       skupper          metrics        reencrypt/Redirect     None
-----
-* User: admin Pass: ocp123
+** From a web browser, access the Hat Service Interconnect UI using the following route:
+
+https://skupper-coolstore-{user}.{openshift_cluster_ingress_domain}
+
+* Login with the credentials:
+
+* User: *admin* Pass: *ocp123*
 * Explore the different components
 
 ** **Topology**: Graphical representation of all the connections
