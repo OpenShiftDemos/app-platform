@@ -627,7 +627,17 @@ image::module2/coolstore_fullworking.png[width=80%]
 The inventory information is now available.
 
 
-*Note*: If you don't see the inventory information yet. Review the inventory logs and restart the pod.
+* Follow these steps *ONLY if you don't see the inventory information yet*. Review the inventory logs and restart the pod.
+
+. Go back to the inventory project:
+
+[.console-input]
+[source,sh,subs="attributes",role=execute]
+----
+oc project inventory-{user}
+----
+
+. Review the logs:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -635,7 +645,7 @@ The inventory information is now available.
 oc get pods
 ----
 
-* Use the inventory-database pod's name for the
+* Use the inventory pod's name for the
 following commands. For example:
 
 
@@ -645,10 +655,13 @@ following commands. For example:
 oc logs inventory-f6957f6d5-7tggx
 ----
 
+. Rollout a new deployment:
+
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-oc delete pod inventory-f6957f6d5-7tggx
+oc rollout restart deployment/inventory
+
 ----
 
 
