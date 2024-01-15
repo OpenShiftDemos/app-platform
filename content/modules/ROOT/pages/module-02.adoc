@@ -361,11 +361,7 @@ The inventory information is available now.
 
 ** From a web browser, access the Hat Service Interconnect UI using the following route:
 
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
-https://skupper-coolstore-{user}.{openshift_cluster_ingress_domain}
-----
+* https://skupper-coolstore-{user}.{openshift_cluster_ingress_domain}
 
 * Login with the credentials:
 
@@ -655,6 +651,8 @@ oc delete pod inventory-f6957f6d5-7tggx
 
 
 * Explore the different components in Red Hat Service Interconnect:
+
+* https://skupper-coolstore-{user}.{openshift_cluster_ingress_domain}
 
 ** **Topology**: Graphical representation of all the connections
 
