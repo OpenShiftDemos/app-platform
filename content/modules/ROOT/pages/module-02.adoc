@@ -645,7 +645,7 @@ oc project inventory-{user}
 oc get pods
 ----
 
-* Use the inventory pod's name for the
+. Use the inventory pod's name for the
 following commands. For example:
 
 
@@ -663,7 +663,7 @@ oc logs inventory-f6957f6d5-7tggx
 oc rollout restart deployment/inventory
 
 ----
-
+. Refresh the coolstore web page.
 
 * Explore the different components in Red Hat Service Interconnect:
 
