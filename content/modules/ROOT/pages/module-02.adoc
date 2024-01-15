@@ -665,7 +665,7 @@ oc rollout restart deployment/inventory
 ----
 . Refresh the coolstore web page.
 
-* Explore the different components in Red Hat Service Interconnect:
+==  Explore the different components in Red Hat Service Interconnect:
 
 [source,sh,subs="attributes",role=execute]
 ----
