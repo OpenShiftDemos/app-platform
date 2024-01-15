@@ -184,13 +184,11 @@ vi token.yaml
 ----
 
 * press *i* to edit the file
-* remove the *namespace* line from the file:
-  labels:
-    skupper.io/type: connection-token
-  name: secret-interconnect
-  resourceVersion: "440300"
-  uid: df3ec97e-de2d-4e7c-9099-21aa99858f92
-type: Opaque
+* go to the end of the file
+* remove the line:  *namespace: coolstore-{user}*
+* your file should look similar to this:
+
+image::module2/sample_yaml.png[width=80%]
 
 * Save the file by pressing ESC + :wq! + ENTER
 
@@ -485,13 +483,13 @@ vi token-database.yaml
 ----
 
 * press *i* to edit the file
-* remove the *namespace* line from the file:
-  labels:
-    skupper.io/type: connection-token
-  name: secret-interconnect-database
-  resourceVersion: "386275"
-  uid: 547c1b17-faf8-4fc8-9a58-26d4faa531ec
-type: Opaque
+* go to the end of the file
+* remove the line:  *inventory-{user}*
+* your file should look similar to this:
+
+image::module2/sample_yaml.png[width=80%]
+
+* Save the file by pressing ESC + :wq! + ENTER
 
 
 * On the main menu, select the option **Cool Stuff Store**
