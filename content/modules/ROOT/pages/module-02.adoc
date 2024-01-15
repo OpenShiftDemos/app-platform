@@ -361,7 +361,11 @@ The inventory information is available now.
 
 ** From a web browser, access the Hat Service Interconnect UI using the following route:
 
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
 https://skupper-coolstore-{user}.{openshift_cluster_ingress_domain}
+----
 
 * Login with the credentials:
 

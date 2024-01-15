@@ -125,7 +125,7 @@ https://github.com/OpenShiftDemos/web-nodejs.git
 6. On Resource Type, select *Serverless Deployment*
 7. Click on Advanced options: Deployment and add *an environment variable* to connect with the Gateway URL:
 
-*Note*: Ensure the Gateway URL is working before pasting it.
+*Note*: Ensure you copy the entire Gateway URL before pasting it.
 
     - *name*: SECURE_COOLSTORE_GW_ENDPOINT
     - *value*: https://gateway-vertx-coolstore-dev-{user}.{openshift_cluster_ingress_domain}/
