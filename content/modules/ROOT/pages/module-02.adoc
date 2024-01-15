@@ -488,7 +488,7 @@ vi token-database.yaml
 
 * press *i* to edit the file
 * go to the end of the file
-* remove the line:  *inventory-{user}*
+* remove the line:  *namespace: inventory-{user}*
 * your file should look similar to this:
 
 image::module2/sample_yaml.png[width=80%]
