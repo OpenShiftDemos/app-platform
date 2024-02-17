@@ -27,7 +27,7 @@ Let's examine all the components involved in such a DevSecOps pipeline to deploy
 
 In this section, we will have a look at the end-to-end DevSecOps pipeline and explore the security gates that are provided in it.
 
-* Login to the openshift console using user *admin* and password *{password}* using this URL: https://{openshift_console_url}
+* Login to the openshift console using user *admin* and password *{password}* using this URL: https://{openshift_console_url}[https://{openshift_console_url}^]
 
 * In the openshift console left menu, Select the Administrator View, then click on *Pipelines -> Pipelines*, select Project *"ci"*, as shown in the screenshot below.
 
@@ -57,7 +57,7 @@ This policy is actually implemented in Red Hat Advanced Cluster Security (ACS), 
 
 Now let's have a more detailed look at those policies directly in Red Hat Advanced Cluster Security.
 
-* In a new tab, open the Red Hat ACS console at https://central-stackrox.{openshift_cluster_ingress_domain} 
+* In a new tab, open the Red Hat ACS console at https://central-stackrox.{openshift_cluster_ingress_domain}[https://central-stackrox.{openshift_cluster_ingress_domain}^]
 
 * Login as user *"admin"* and password *{password}*.
 
@@ -119,7 +119,7 @@ That's it! You now have a better understanding of how Red Hat ACS allows you to 
 
 Now that we are familiar with how the previous pipeline was integrated with Red Hat ACS to implement security gates, let's have a look at the more advanced devsecops pipeline called "app-globex-ui-pipeline".
 
-* Go back to the OpenShift Console: https://{openshift_console_url}
+* Go back to the OpenShift Console: https://{openshift_console_url}[https://{openshift_console_url}^]
 
 * From the left side menu, select Pipelines -> Pipelines. In the right-side window, select the "PipelineRuns" tab and click on the pipelineRun with a "Succeeded" status.
 
@@ -166,7 +166,7 @@ Red Hat Quay is a trusted, geo-replicated, security enabled container registry t
 
 Let's now have a look at container image in Quay, and verify that it has indeed been signed by the pipeline.
 
-* In a new tab, Open the Quay URL: https://quay-{guid}.{openshift_cluster_ingress_domain}
+* In a new tab, Open the Quay URL: https://quay-{guid}.{openshift_cluster_ingress_domain}[https://quay-{guid}.{openshift_cluster_ingress_domain}^]
 
 * Login as user *"quayadmin"* and password *{password}*. Next, click the *"quayadmin/globex-ui"* repository, and click on 'Tags' on the left side menu
 
@@ -194,7 +194,7 @@ image::/module3/pipeline-group-4.png[]
 
 * *update-dev-manifest*: This task is responsible for updating the manifests in the git repository, by updating the container image reference in the deployment yaml file, using Kustomize. This is a standard approach when using tools like OpenShift GitOps (based on argocd). Let's have a look at the yaml file in Gitea.
 
-* In a new tab, open Gitea's URL: https://gitea.{openshift_cluster_ingress_domain}
+* In a new tab, open Gitea's URL: https://gitea.{openshift_cluster_ingress_domain}[https://gitea.{openshift_cluster_ingress_domain}^]
 
 * Login using the provided credentials: username: *dev-user*, password: *openshift*.
 
@@ -208,7 +208,7 @@ image::/module3/gitea-updated-manifest.png[]
 
 Let's now switch to OpenShift GitOps to see how the application gets deployed in the DEV cluster using argocd.
 
-* Open the OpenShift GitOps URL: https://openshift-gitops-server-openshift-gitops.{openshift_cluster_ingress_domain}
+* Open the OpenShift GitOps URL: https://openshift-gitops-server-openshift-gitops.{openshift_cluster_ingress_domain}[https://openshift-gitops-server-openshift-gitops.{openshift_cluster_ingress_domain}^]
 
 * Login as user *"admin"* with password *{password}*
 
@@ -222,11 +222,11 @@ image::/module3/gitops-app-details-more.png[]
 
 * Close the application details window, and explore the application page to see all the kubernetes resources that are deployed by OpenShift GitOps to the target cluster / namespace, such as the deployments, the services, etc.
 
-* Let's see the same resources deployed in the application namespace *"globex"* with this URL: https://{openshift_console_url}/topology/ns/globex?view=graph
+* Let's see the same resources deployed in the application namespace *"globex"* with this URL: https://{openshift_console_url}/topology/ns/globex?view=graph[https://{openshift_console_url}/topology/ns/globex?view=graph^]
 
 image::/module3/globex-app.png[]
 
-* Let's open the application to verify that it is running as expected: https://globex-ui-globex.{openshift_cluster_ingress_domain}/products
+* Let's open the application to verify that it is running as expected: https://globex-ui-globex.{openshift_cluster_ingress_domain}/products[https://globex-ui-globex.{openshift_cluster_ingress_domain}/products^]
 
 image::/module3/globex-ui.png[]
 
